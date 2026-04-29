@@ -5,6 +5,17 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 
+// struct
+struct State
+{
+    sf::Vector2f curr_pos;
+    sf::Vector2f prev_pos;
+    sf::Vector2f curr_vel;
+    sf::Vector2f prev_vel;
+    sf::Vector2f curr_acc;
+    sf::Vector2f prev_acc;
+};
+
 // function
 float float_square(float x)
 {
@@ -30,6 +41,30 @@ void chasers_initialize(std::vector<sf::CircleShape>& chasers, sf::Vector2u wind
         chasers[i].setPosition(init_pos[i]);
         chasers[i].setFillColor(sf::Color(init_color[i][0], init_color[i][1], init_color[i][2]));
     }
+}
+
+void chasing(sf::CircleShape& chaser, const sf::Vector2f& target_pos)
+{
+    float chasing_speed = 2e-2;
+    sf::Vector2f chaser_pos = chaser.getPosition();
+    float v = sqrt(pow(target_pos.x - chaser_pos.x,2) + pow(target_pos.y - chaser_pos.y,2));
+    float vx = (target_pos.x - chaser_pos.x)/v * chasing_speed;
+    float vy = (target_pos.y - chaser_pos.y)/v * chasing_speed;
+    chaser.setPosition({chaser_pos.x + vx, chaser_pos.y + vy});
+}
+
+sf::Vector2f chasing(sf::Vector2f chaser_pos, sf::Vector2f target_pos)
+{
+    float chasing_speed = 2e-2;
+    float v = sqrt(pow(target_pos.x - chaser_pos.x,2) + pow(target_pos.y - chaser_pos.y,2));
+    float vx = (target_pos.x - chaser_pos.x)/v * chasing_speed;
+    float vy = (target_pos.y - chaser_pos.y)/v * chasing_speed;
+    return {vx, vy};
+}
+
+sf::Vector2f predict_Euler(State& state)
+{
+    // x_t+1 = xt + vt*t + 0.5*a*t^2
 }
 
 const int socket_port_num = 5005;
@@ -60,7 +95,8 @@ int main()
 
 
     // finger_posiion 初期化
-    sf::Vector2f finger_position = {-100.f, -100.f};
+    State finger;
+    finger.prev_pos = {-100.f, -100.f};
 
 
     while (window.isOpen())
@@ -80,12 +116,16 @@ int main()
         
         
         // Socket通信
-        if (socket.receive(&finger_position, sizeof(finger_position), received, sender, port) == sf::Socket::Status::Done)
+        if (socket.receive(&finger.curr_pos, sizeof(finger.curr_pos), received, sender, port) == sf::Socket::Status::Done)
         {
-            finger_position.x *= window_size.x;
-            finger_position.y *= window_size.y;
+            finger.curr_pos.x *= window_size.x;
+            finger.curr_pos.y *= window_size.y;
         }
 
+        // 敵の追跡アルゴリズム
+        
+        // 単純追跡
+        for (auto& chaser : chasers) chasing(chaser, finger.curr_pos);
 
 
         
@@ -96,7 +136,6 @@ int main()
         {
             if (getDistance_square(player, chaser) < 4*rad*rad)
             {
-                std::cout << "BoB";
                 return 0;
             }
         }
@@ -105,7 +144,7 @@ int main()
         
         // 描画
         window.clear(sf::Color::Black);
-        player.setPosition({finger_position.x, finger_position.y});
+        player.setPosition({finger.curr_pos.x, finger.curr_pos.y});
         window.draw(player);
         for (auto& chaser : chasers) window.draw(chaser);
 
