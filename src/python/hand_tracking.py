@@ -3,6 +3,17 @@ import mediapipe as mp
 from mediapipe.tasks.python import vision
 import socket
 import struct
+import os
+
+# read .env
+environ = dict()
+if os.path.exists(".env"):
+    with open(".env") as env:
+        for line in env:
+            if "=" in line and not line.startswith("#"):
+                key, value = line.strip().split(" = ")
+                environ[key] = value
+environ["port_number"] = int(environ["port_number"])
 
 # mediapipe hand landmarker model & setting
 model_path = "models/hand_landmarker.task"
@@ -17,7 +28,7 @@ landmarker = vision.HandLandmarker.create_from_options(option)
 
 # socket setting
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server_address = ("127.0.0.1", 5005) # 自分のパソコン(127.0.0.1)の 5005ポート
+server_address = ("127.0.0.1", environ["port_number"]) # 自分のパソコン(127.0.0.1)の 5005ポート
 
 
 cap = cv2.VideoCapture(0)

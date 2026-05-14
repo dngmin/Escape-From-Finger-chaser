@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <chrono>
+#include <fstream>
 
 // SFML
 #include <SFML/Graphics.hpp>
@@ -96,6 +97,27 @@ struct chaser_State
 };
 
 // function
+int get_port_number(const std::string& filename = "../.env")
+{
+    std::ifstream file(filename);
+    if (!file.is_open()) return 0;
+
+    std::string line;
+    while (std::getline(file,line))
+    {
+        if (line.empty() || line[0] == '#') continue;
+
+        size_t split_point = line.find('=');
+        if (split_point != std::string::npos)
+        {
+            std::string key = line.substr(0, split_point - 1);
+            std::string value = line.substr(split_point + 2);
+            if (key == "port_number") return std::stoi(value);
+        }
+    }
+    return -1;
+}
+
 float float_square(float x)
 {
     return x * x;
@@ -137,8 +159,9 @@ int main()
     std::size_t received;
     std::optional<sf::IpAddress> sender;
     unsigned short port;
+    int port_number = get_port_number();
     socket.setBlocking(false);
-    if (socket.bind(socket_port_num) != sf::Socket::Status::Done) return -1;
+    if (socket.bind(port_number) != sf::Socket::Status::Done) return -1;
 
 
     // SFML 初期化
