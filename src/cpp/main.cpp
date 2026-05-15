@@ -7,9 +7,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 
-// constant
-const int socket_port_num = 5005;
-
 // class
 class playerState
 {
