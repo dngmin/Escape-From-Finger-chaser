@@ -36,7 +36,7 @@ git clone https://github.com/dngmin/Escape-From-Finger-chaser.git
 1. [Github レポジトリ](https://github.com/dngmin/Escape-From-Finger-chaser)右上の緑[<> Code]ボタンをクリックする。
 2. [Downlaod ZIP]を選択し、圧縮ファイルをダウンロード
 3.解答の後、フォルダへ移動
-#### **⚠️ A,Bどれもclone,解答の後にはフォルダに移動が必要**
+#### **⚠️ A,Bどれもclone,解凍の後にはフォルダに移動が必要**
 ```bash
 cd Path/Escape-From-Finger-chaser # e.g. cd desktop/user/Escape-From-Finger-chaser
 ```
