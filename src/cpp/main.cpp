@@ -86,7 +86,6 @@ int main()
     socket.setBlocking(false);
     if (socket.bind(port_number) != sf::Socket::Status::Done) return -1;
 
-
     // SFML 初期化
     sf::Vector2u window_size = {800, 600};
     sf::RenderWindow window(sf::VideoMode(window_size), "display");
@@ -100,7 +99,6 @@ int main()
     // 敵
     std::vector<chaser_State> chasers(4);
     chasers_initialize(chasers, window_size, chaser_size_rad);
-
 
     // player position 初期化
     PlayerState player_state;
@@ -122,15 +120,16 @@ int main()
             }
         }
         
-
         // Socket通信
         if (socket.receive(&received_pos, sizeof(received_pos), received, sender, port) == sf::Socket::Status::Done)
         {
-            player.setPosition({received_pos.x * window_size.x, received_pos.y * window_size.y});
             // Player State Update
             player_state.update(received_pos);
-        }
 
+            // set player
+            sf::Vector2f curr_pos = player_state.get_curr_pos();
+            player.setPosition({curr_pos.x * window_size.x, curr_pos.y * window_size.y});
+        }
 
         // 敵の追跡アルゴリズム
         
@@ -142,9 +141,12 @@ int main()
             else chasing(chasers[i], player_state.get_Euler_predict(), window_size);
         }
 
+        // 描画
+        window.clear(sf::Color::Black);
+        window.draw(player);
+        for (auto& chaser : chasers) window.draw(chaser.chaser_shape);
 
-        
-
+        window.display();
 
         // 敵への当たり判定
         for (const auto& chaser : chasers)
@@ -155,14 +157,6 @@ int main()
             }
         }
 
-
-        
-        // 描画
-        window.clear(sf::Color::Black);
-        window.draw(player);
-        for (auto& chaser : chasers) window.draw(chaser.chaser_shape);
-
-        window.display();
     }
 
 
