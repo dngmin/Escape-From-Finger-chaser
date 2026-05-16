@@ -7,6 +7,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 list (APPEND CMAKE_PREFIX_PATH "/opt/homebrew")
 find_package(SFML 3 REQUIRED COMPONENTS Graphics Network)
 
-add_executable(${PROJECT_NAME} src/cpp/main.cpp)
+add_executable(${PROJECT_NAME}
+    src/cpp/main.cpp
+    src/cpp/Player.cpp
+    include/Player.hpp
+)
 
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Network)

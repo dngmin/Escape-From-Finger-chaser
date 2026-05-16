@@ -1,90 +1,16 @@
 #include <iostream>
 #include <vector>
 #include <chrono>
+
+// Plyaer状態関連
+#include "Player.hpp"
+
+// データの読み込み
 #include <fstream>
 
 // SFML
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
-
-// class
-class playerState
-{
-    using Clock = std::chrono::high_resolution_clock;
-    using TimePoint = std::chrono::time_point<Clock>;
-
-    private:
-    sf::Vector2f curr_pos;
-    sf::Vector2f prev_pos;
-    sf::Vector2f curr_vel;
-    sf::Vector2f prev_vel;
-    sf::Vector2f curr_acc;
-
-    // 1€ filter 初期値
-    TimePoint T_prev = Clock::now();
-    double dT;
-    static constexpr double min_cutoff_frequency = 1.0; // f_c_min：最小遮断周波数
-    static constexpr double beta = 0.01;
-    static constexpr double derivative_cutoff = 1.0; // d_cutoff；微分値の遮断周波数
-    static constexpr double two_pi = 6.2831853071795865;
-
-    double get_alpha(double dT, double cutoff)
-    {
-        return 1 / (1 + 1 / (two_pi * dT * cutoff));
-    }
-
-    double solve_low_pass_filter(double curr, double prev, double alpha)
-    {
-        return alpha * curr + (1 - alpha) * prev;
-    }
-
-    public:
-    sf::Vector2f get_curr_pos()
-    {
-        return curr_pos;
-    }
-
-    sf::Vector2f get_Euler_predict()
-    {
-        // x_t+1 = xt + vt*dt
-        float predict_x = curr_pos.x + curr_vel.x * (5 * dT);
-        float predict_y = curr_pos.y + curr_vel.y * (5 * dT);
-        return {predict_x, predict_y};
-    }
-
-    void update(sf::Vector2f received_pos)
-    {
-        if (received_pos == curr_pos) return;
-
-        // 1€ filter
-        // calculate velocity
-        TimePoint T = Clock::now();
-        dT = std::chrono::duration<double>(T - T_prev).count();
-        curr_vel.x = (received_pos.x - prev_pos.x) / dT;
-        curr_vel.y = (received_pos.y - prev_pos.y) / dT;
-
-        // filtering velocity
-        double alpha_derivative = get_alpha(dT, derivative_cutoff);
-        curr_vel.x = solve_low_pass_filter(curr_vel.x, prev_vel.x, alpha_derivative);
-        curr_vel.y = solve_low_pass_filter(curr_vel.y, prev_vel.y, alpha_derivative);
-
-        // adapted alpha
-        double cutoff_frequency_x = min_cutoff_frequency + beta * abs(curr_vel.x);
-        double cutoff_frequency_y = min_cutoff_frequency + beta * abs(curr_vel.y);
-        double alpha_x = get_alpha(dT, cutoff_frequency_x);
-        double alpha_y = get_alpha(dT, cutoff_frequency_y);
-
-        // filtering
-        curr_pos.x = solve_low_pass_filter(received_pos.x, prev_pos.x, alpha_x);
-        curr_pos.y = solve_low_pass_filter(received_pos.y, prev_pos.y, alpha_y);
-
-        // ready for next
-        T_prev = T;
-        curr_acc = curr_vel - prev_vel;
-        prev_vel = curr_vel;
-        prev_pos = curr_pos;
-    }
-};
 
 // struct
 struct chaser_State
@@ -177,7 +103,7 @@ int main()
 
 
     // player position 初期化
-    playerState player_state;
+    PlayerState player_state;
     sf::Vector2f received_pos;
 
 
