@@ -2,13 +2,26 @@
 - カメラを用いたチェイスゲーム（Chase Game）
 
 ## Demo
-- **製作中**
+![demo](./assets/demo.gif)
 
 ## 技術スタック
-- **作成中**
+### 開発環境
+- **OS**
+    - macOS
+- **Languages**
+    - Python 3.12+
+    - C++ 20+
+- **Build Tool**
+    - CMake 3.12
+
+### ライブラリ & フレームワーク
+- **Python**
+    - `mediapipe` (0.10.35) : AIを用いたLIVE Hand Landmark Detection
+    - `opencv-python` (4.13.0.92) : カメラ映像入及びイメージ処理
+- **C++**
+    - `SFML` (Simple and Fast Multimedia Library) : グラフィックUI及びSocket通信
 
 ## 特徴
-- **作成中**
 - **手の揺れ(jitter)補正** : 1€ Filterをを用いたランダムワークでも補正を行う
 - **4種の追跡アルゴリズム** : ユーザーを追跡するため異なる追跡アルゴリズムを複数使用
     - **単純追跡**
@@ -20,7 +33,8 @@
     - **C++** : 追跡ロジックアルゴリズム、UI
 
 ## Architecture & Program Flow
- - **作成中**
+ - (**現在、構成図を作成中**)
+    - 基本的な流れとして、Python側でMediaPipeを用いてての座標を取得し、UDP通信を介してC++側に座標データを送信、C++側で追跡アルゴリズムの計算とSFMLによる描画(UI機能)を行っている。
 
 ## インストール方法 & 使い方
 - ⚠️MacOS開発環境であるため、他のOSについてはTest未実施
