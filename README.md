@@ -70,7 +70,6 @@ port_number = 5005
 host_number = 127.0.0.1
 model_path = models/hand_landmarker.task
 ```
-- **⚠️"="の前後に必ずスペースを一つ空けること : 読み込めない原因となる**
 
 ### 2. ライブラリ設定
 - Python
@@ -113,7 +112,7 @@ python src/python/hand_tracking.py
     - [x] Python
     - [ ] C++
 - 例外処理
-    - [ ] Python
+    - [x] Python
     - [ ] C++
 - 敵の動き追加
     - [x] 単純追跡
@@ -123,3 +122,5 @@ python src/python/hand_tracking.py
 - python mediapipeのrunning_modeをLIVE_STREAMに変更
     - call backを用いてデータ送信をmain loopから外せる
 - hand_tracking.pyとmain.cppを同時に実行するファイル作成
+- edgeでの異常の動き発生対策
+- 高速で手を動かすと生じるフレームドロップ及びテレポート対策
