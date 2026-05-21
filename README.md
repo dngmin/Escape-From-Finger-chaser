@@ -22,7 +22,7 @@
     - `SFML` (Simple and Fast Multimedia Library) : グラフィックUI及びSocket通信
 
 ## 特徴
-- **手の揺れ(jitter)補正** : 1€ Filterをを用いたランダムワークでも補正を行う
+- **手の揺れ(jitter)補正** : 1€ Filterをを用いてランダムな動きでも補正を行う
 - **4種の追跡アルゴリズム** : ユーザーを追跡するため異なる追跡アルゴリズムを複数使用
     - **単純追跡**
     - **オイラー法**
@@ -33,8 +33,28 @@
     - **C++** : 追跡ロジックアルゴリズム、UI
 
 ## Architecture & Program Flow
- - (**現在、構成図を作成中**)
-    - 基本的な流れとして、Python側でMediaPipeを用いてての座標を取得し、UDP通信を介してC++側に座標データを送信、C++側で追跡アルゴリズムの計算とSFMLによる描画(UI機能)を行っている。
+### Architecture
+- Input : Mediapipeで検出した生の座標データ(`received_pos`)が入ります。x, y座標をfloat形式にパッキングしUDP通信でC++ロジック側に渡す。
+- Processing
+    - 渡されたデータの時間間隔(`dT`)を測るタイマー、速度を計算する数式、速度から精密にノイズを削る1€ フィルター(One Euro Filter)が結合されている。
+    - 補正された現在座標に基づき、オイラー法(Euler method)を用いてnステップ後の位置を予測する。
+- Output
+    - ユーザーやChaserの位置座標に基づき描画。
+    - 補正された現在座標(`get_curr_pos`)とnステップ後の位置座標(`get_Euler_predict`)にChaserが向かい、Chaserの位置を更新
+
+### Program Flow
+0. .envから環境変数取得
+- ここからはループ
+1. Mediapipeから人差し指先の座標を取得
+2. float形式にパッキングしUDP送信
+3. ユーザーによるプログラム終了確認→終了
+4. UIウィンドウサイズ変化確認　→　視点変更
+5. UDP受信(座標データ)確認　→　1Eurofilterノイズ補正
+6. 補正及び予測座標に基づきChaser情報更新
+7. 描画(Rendering)
+8. オブジェクト間当たり判定
+- 繰り返し
+9. 終了
 
 ## インストール方法 & 使い方
 - ⚠️MacOS開発環境であるため、他のOSについてはTest未実施
@@ -61,13 +81,13 @@ cd Path/Escape-From-Finger-chaser # e.g. cd desktop/user/Escape-From-Finger-chas
 
 ### 1. 環境変数設定(.env)
 - プロジェクトディレクトリに.envファイルを生成以下のパラメータを指定します。
-    1. host_number
-    2. port_number
-    3. model_path
+    - host_number
+    - port_number
+    - model_path
 - 書き方の例
 ```
-port_number = 5005
 host_number = 127.0.0.1
+port_number = 5005
 model_path = models/hand_landmarker.task
 ```
 
@@ -124,3 +144,6 @@ python src/python/hand_tracking.py
 - hand_tracking.pyとmain.cppを同時に実行するファイル作成
 - edgeでの異常の動き発生対策
 - 高速で手を動かすと生じるフレームドロップ及びテレポート対策
+- chaserたちの位置が重なる時での対策
+- ユーザーが止まっているとき生じる意図してないchaser騙し対策
+- Program Flowをmermaidに変更
