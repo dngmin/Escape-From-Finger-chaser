@@ -1,41 +1,62 @@
 #include "Player.hpp"
+#include <cmath>
 
 // Playerのデータを更新
 // 現在位置生データから1€ filterを用いて補正
 // 既存のLow Pass Filterでの固定されたフィルター係数を可変的にした手法
 void PlayerState::update(sf::Vector2f received_pos)
 {
-    // 位置変化なし又は変化が微小すぎる場合はreturn
-    // 更新できずreturnされたらchasersを騙すフェイントが仕掛ける。修正要
-    if (received_pos == curr_pos) return;
-
     // 1€ filterの実装
+    // dTを測定
     TimePoint T = Clock::now();
     dT = std::chrono::duration<double>(T - T_prev).count();
+    // dT < MIN_dTになるとMIN_DTを使用する
+    // 次のcurr_velを求めるときZeroDivisionErrorを防ぐため
+    dT = (dT > MIN_dT? dT : MIN_dT);
+
+    // 位置変化なし又は変化が微小すぎる場合はreturn
+    // 長時間止まっていてまた動き出してもdTが膨大な数字になることを防ぐため、dT計算より後に配置
+    // 更新できずreturnされたらchasersを騙すフェイントが仕掛ける。修正要
+    if (received_pos == curr_pos)
+    {
+        // 時間は更新するが、止まっているとみなし、速度を0にする
+        T_prev = T;
+        prev_pos = curr_pos;
+        curr_vel = {0.f, 0.f};
+        prev_vel = {0.f, 0.f};
+        return;
+    }
+
+    // 変移から速度を逆算する
     curr_vel.x = (received_pos.x - prev_pos.x) / dT;
     curr_vel.y = (received_pos.y - prev_pos.y) / dT;
 
     // filtering velocity
+    // 一次的に速度filteringを行うためのalpha取得
     double alpha_derivative = get_alpha(dT, derivative_cutoff);
+    // 一次的に速度をfiltering
     curr_vel.x = solve_LPF(curr_vel.x, prev_vel.x, alpha_derivative);
     curr_vel.y = solve_LPF(curr_vel.y, prev_vel.y, alpha_derivative);
 
     // adapted alpha
-    double cutoff_frequency_x = min_cutoff_frequency + beta * abs(curr_vel.x);
-    double cutoff_frequency_y = min_cutoff_frequency + beta * abs(curr_vel.y);
+    // 位置補正に用いるalphaを取得
+    double cutoff_frequency_x = min_cutoff_frequency + beta * std::abs(curr_vel.x);
+    double cutoff_frequency_y = min_cutoff_frequency + beta * std::abs(curr_vel.y);
     double alpha_x = get_alpha(dT, cutoff_frequency_x);
     double alpha_y = get_alpha(dT, cutoff_frequency_y);
 
     // filtering
+    // alphaを用いて速度を補正
     curr_pos.x = solve_LPF(received_pos.x, prev_pos.x, alpha_x);
     curr_pos.y = solve_LPF(received_pos.y, prev_pos.y, alpha_y);
 
-    // ready for next
+    // 次の計算のため値変換
     T_prev = T;
     curr_acc = curr_vel - prev_vel;
     prev_vel = curr_vel;
     prev_pos = curr_pos;
 }
+
 // 現在位置取得
 sf::Vector2f PlayerState::get_curr_pos()
 {

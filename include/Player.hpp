@@ -20,15 +20,18 @@ public:
 
 private:
     // Playerのデータ
-    sf::Vector2f curr_pos;
-    sf::Vector2f prev_pos;
-    sf::Vector2f curr_vel;
-    sf::Vector2f prev_vel;
-    sf::Vector2f curr_acc;
+    sf::Vector2f curr_pos = {0.5, 0.5};
+    sf::Vector2f prev_pos = {0.f, 0.f};
+    sf::Vector2f curr_vel = {0.f, 0.f};
+    sf::Vector2f prev_vel = {0.f, 0.f};
+    sf::Vector2f curr_acc = {0.f, 0.f}; // 現在は使用されていない
 
     // 基準とする時間(初回目(クラス宣言時)に決められ、update関数より更新される)
     TimePoint T_prev = Clock::now();
     double dT;
+    // dTが 0になることを防ぐためのガード
+    // dTがMIN_dTより小さくなるとMIN_dTを使用
+    static constexpr double MIN_dT = 1e-6;
 
     // 何ステップ先の予測値にするか
     // 基準は 予測ステップ数 * dt
@@ -37,12 +40,14 @@ private:
     // 1€ filter 初期値。tuningの際には以下を修正
 
     // f_c_min : 最小遮断周波数
+    // 今後alpha計算の際、分母となるため0は不可
     static constexpr double min_cutoff_frequency = 1.0;
     // 速度係数(又は速度敏感度)
     // 大きくすると、急変化時にも反応が早いが、ノイズはより入る
     // 小さくすると、ノイズが少なく滑らかな軌跡を見せるが、遅延が生じる
     static constexpr double beta = 0.01;
     // d_cutoff；微分値の遮断周波数
+    // 今後alpha計算の際、分母となるため0は不可
     static constexpr double derivative_cutoff    = 1.0;
 
     // 2 * pi
