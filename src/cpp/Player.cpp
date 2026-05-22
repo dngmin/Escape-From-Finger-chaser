@@ -7,7 +7,7 @@ void PlayerState::update(sf::Vector2f received_pos)
 {
     // 1€ filterの実装
     TimePoint T = Clock::now();
-    dT = std::chrono::duration<double>(T - T_prev).count();
+    dT = static_cast<float>(std::chrono::duration<double>(T - T_prev).count());
     // 次のcurr_velを求めるときZeroDivisionErrorを防ぐため
     dT = (dT > MIN_dT? dT : MIN_dT);
 
@@ -28,15 +28,15 @@ void PlayerState::update(sf::Vector2f received_pos)
     curr_vel.y = (received_pos.y - prev_pos.y) / dT;
 
     // filtering velocity
-    double alpha_derivative = get_alpha(dT, derivative_cutoff);
+    float alpha_derivative = get_alpha(dT, derivative_cutoff);
     curr_vel.x = solve_LPF(curr_vel.x, prev_vel.x, alpha_derivative);
     curr_vel.y = solve_LPF(curr_vel.y, prev_vel.y, alpha_derivative);
 
     // adapted alpha
-    double cutoff_frequency_x = min_cutoff_frequency + beta * std::abs(curr_vel.x);
-    double cutoff_frequency_y = min_cutoff_frequency + beta * std::abs(curr_vel.y);
-    double alpha_x = get_alpha(dT, cutoff_frequency_x);
-    double alpha_y = get_alpha(dT, cutoff_frequency_y);
+    float cutoff_frequency_x = min_cutoff_frequency + beta * std::abs(curr_vel.x);
+    float cutoff_frequency_y = min_cutoff_frequency + beta * std::abs(curr_vel.y);
+    float alpha_x = get_alpha(dT, cutoff_frequency_x);
+    float alpha_y = get_alpha(dT, cutoff_frequency_y);
 
     // filtering
     curr_pos.x = solve_LPF(received_pos.x, prev_pos.x, alpha_x);
@@ -60,12 +60,12 @@ sf::Vector2f PlayerState::get_Euler_predict() const
     return {predict_x, predict_y};
 }
 
-double PlayerState::solve_LPF(double curr, double prev, double alpha) const
+float PlayerState::solve_LPF(float curr, float prev, float alpha) const
 {
-    return alpha * curr + (1 - alpha) * prev;
+    return alpha * curr + (1.f - alpha) * prev;
 }
 
-double PlayerState::get_alpha(double dT, double cutoff) const
+float PlayerState::get_alpha(float dT, float cutoff) const
 {
-    return 1 / (1 + 1 / (two_pi * dT * cutoff));
+    return 1.f / (1.f + 1.f / (two_pi * dT * cutoff));
 }
