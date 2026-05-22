@@ -26,10 +26,12 @@ class Mediapipe_Setting:
             running_mode = vision.RunningMode.VIDEO,
         )
         self.landmarker = vision.HandLandmarker.create_from_options(option)
+        # index 8 = 人差し指
+        self.index_finger_idx = 8
     
     def init_camera(self):
-        # 0 = PCの default カメラデバイス
-        self.cap = cv2.VideoCapture(0)
+        default_camera = 0
+        self.cap = cv2.VideoCapture(default_camera)
         if not self.cap.isOpened() : raise CameraNotFoundError("OpenCV: failed to connect camera")
 
         # 開始時刻を記録
@@ -72,8 +74,7 @@ class Mediapipe_Setting:
         # 画像から手が検出された場合
         if result.hand_landmarks:
             for landmarks in result.hand_landmarks:
-                # index 8 = 人差し指
-                cx, cy = landmarks[8].x, landmarks[8].y
+                cx, cy = landmarks[self.index_finger_idx].x, landmarks[self.index_finger_idx].y
             # floatに変換し送信
             data = struct.pack("2f",cx, cy)
             
