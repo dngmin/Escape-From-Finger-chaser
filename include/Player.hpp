@@ -13,31 +13,28 @@ public:
     void update(sf::Vector2f received_pos);
 
     // Playerの現在位置を取得
-    sf::Vector2f get_curr_pos();
+    sf::Vector2f get_curr_pos() const;
 
     // Euler法を用いたPlayerの予測位置取得
-    sf::Vector2f get_Euler_predict();
+    sf::Vector2f get_Euler_predict() const;
 
 private:
     // Playerのデータ
-    sf::Vector2f curr_pos = {0.5, 0.5};
-    sf::Vector2f prev_pos = {0.f, 0.f};
-    sf::Vector2f curr_vel = {0.f, 0.f};
-    sf::Vector2f prev_vel = {0.f, 0.f};
-    sf::Vector2f curr_acc = {0.f, 0.f}; // 現在は使用されていない
+    sf::Vector2f curr_pos = {0.5f, 0.5f}; // 現在位置
+    sf::Vector2f prev_pos = {0.f, 0.f}; // 過去の位置
+    sf::Vector2f curr_vel = {0.f, 0.f}; // 現在速度
+    sf::Vector2f prev_vel = {0.f, 0.f}; // 過去の速度
 
-    // 基準とする時間(初回目(クラス宣言時)に決められ、update関数より更新される)
+    // 基準とする時間(初回呼び出し時に初期化され、update関数より更新される)
     TimePoint T_prev = Clock::now();
     double dT;
     // dTが 0になることを防ぐためのガード
-    // dTがMIN_dTより小さくなるとMIN_dTを使用
     static constexpr double MIN_dT = 1e-6;
 
-    // 何ステップ先の予測値にするか
-    // 基準は 予測ステップ数 * dt
+    // 予測ステップ数
     static constexpr int prediction_steps = 5;
 
-    // 1€ filter 初期値。tuningの際には以下を修正
+    // 1€ filter 初期値。tuningの際には以下を調整
 
     // f_c_min : 最小遮断周波数
     // 今後alpha計算の際、分母となるため0は不可
@@ -54,8 +51,8 @@ private:
     static constexpr double two_pi = 6.2831853071795865;
 
     // LPF : Low Pass Filter計算
-    double solve_LPF(double curr, double prev, double alpha);
+    double solve_LPF(double curr, double prev, double alpha) const;
 
     // LPFに使われる フィルター係数(又は平滑化係数)取得
-    double get_alpha(double dT, double cutoff);
+    double get_alpha(double dT, double cutoff) const;
 };
