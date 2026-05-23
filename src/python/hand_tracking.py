@@ -113,6 +113,7 @@ def read_env():
                     environ[key] = value
     # port numberは整数に変換する必要がある
     environ["port_number"] = int(environ["port_number"])
+    if environ["port_number"] <= 0: raise ValueError("invalid literal for int")
     return environ
 
 if __name__ == "__main__":
@@ -163,7 +164,7 @@ if __name__ == "__main__":
             print("[Error] model pathが見つかりません")
             print("→ 解決方法: .envファイルにmodel_pathがあるか確認してください")
         elif "invalid literal for int" in error_msg:
-            print("[Error] port numberは整数である必要があります")
+            print("[Error] port numberは非負整数である必要があります")
             print("→ 解決方法: .envファイルのport_numerを確認してください")
         
         '''
