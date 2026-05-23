@@ -9,8 +9,12 @@ find_package(SFML 3 REQUIRED COMPONENTS Graphics Network)
 
 add_executable(${PROJECT_NAME}
     src/cpp/main.cpp
+
     src/cpp/Player.cpp
+    src/cpp/env_load.cpp
+
     include/Player.hpp
+    include/env_load.hpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)

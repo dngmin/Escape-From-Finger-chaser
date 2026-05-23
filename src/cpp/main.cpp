@@ -1,12 +1,15 @@
 #include <iostream>
 #include <vector>
 #include <chrono>
+#include <string>
+#include <fstream>
+#include <stdexcept>
 
 // Plyaer状態関連
 #include "Player.hpp"
 
-// データの読み込み
-#include <fstream>
+// .env読み込み
+#include "env_load.hpp"
 
 // SFML
 #include <SFML/Graphics.hpp>
@@ -20,27 +23,6 @@ struct chaser_State
 };
 
 // function
-int get_port_number(const std::string& filename = "../.env")
-{
-    std::ifstream file(filename);
-    if (!file.is_open()) return 0;
-
-    std::string line;
-    while (std::getline(file,line))
-    {
-        if (line.empty() || line[0] == '#') continue;
-
-        size_t split_point = line.find('=');
-        if (split_point != std::string::npos)
-        {
-            std::string key = line.substr(0, split_point - 1);
-            std::string value = line.substr(split_point + 2);
-            if (key == "port_number") return std::stoi(value);
-        }
-    }
-    return -1;
-}
-
 float float_square(float x)
 {
     return x * x;
@@ -75,16 +57,39 @@ void chasing(chaser_State& chaser, const sf::Vector2f& target_pos, sf::Vector2u 
     chaser.chaser_shape.setPosition({window_size.x * (chaser.position.x), window_size.y * (chaser.position.y)});
 }
 
+void red_message(std::string msg)
+{
+    std::cout << "\033[31m" << msg << "\033[0m" << std::endl;
+}
+
 int main()
 {
+    try
+    {
+    int port_number = get_port_number();
+    }
+    catch (const envError& e)
+    {
+        std::cout << e.what() << std::endl;
+        
+        switch (e.getType())
+        {
+            case envError::Type::FILE_NOT_FOUND:
+                red_message("→ 解決方法: .envファイルがあるか又はPathを確認してください"); break;
+            case envError::Type::PORT_NUMBER_NOT_NONNEGATIVE_INTEGER:
+                red_message("→ 解決方法: .envファイルのport_numerを確認してください"); break;
+            case envError::Type::PORT_NUMBER_NOT_FOUND:
+                red_message("→ 解決方法: .envファイルにport_numberがあるか確認してください"); break;
+        }
+    }
+
     // Udp Socket 初期化
     sf::UdpSocket socket;
     std::size_t received;
     std::optional<sf::IpAddress> sender;
     unsigned short port;
-    int port_number = get_port_number();
     socket.setBlocking(false);
-    if (socket.bind(port_number) != sf::Socket::Status::Done) return -1;
+    if (socket.bind(5005) != sf::Socket::Status::Done) return -1;
 
     // SFML 初期化
     sf::Vector2u window_size = {800, 600};
@@ -104,6 +109,10 @@ int main()
     PlayerState player_state;
     sf::Vector2f received_pos;
 
+    {
+        sf::Vector2f curr_pos = player_state.get_curr_pos();
+        player.setPosition({curr_pos.x * window_size.x, curr_pos.y * window_size.y});
+    }
 
     while (window.isOpen())
     {
