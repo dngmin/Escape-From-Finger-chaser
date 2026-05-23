@@ -13,10 +13,16 @@ public:
     void update(sf::Vector2f received_pos);
 
     // Playerの現在位置を取得
-    sf::Vector2f get_curr_pos() const;
+    sf::Vector2f get_curr_pos() const {return curr_pos;}
 
     // Euler法を用いたPlayerの予測位置取得
-    sf::Vector2f get_Euler_predict() const;
+    sf::Vector2f get_Euler_predict() const
+    {
+        return {
+            curr_pos.x + curr_vel.x * (prediction_steps * dT),
+            curr_pos.y + curr_vel.y * (prediction_steps * dT)
+        };
+    }
 
 private:
     // Playerのデータ
@@ -51,8 +57,14 @@ private:
     static constexpr float two_pi = 6.2831853f;
 
     // LPF : Low Pass Filter計算
-    float solve_LPF(float curr, float prev, float alpha) const;
+    float solve_LPF(float curr, float prev, float alpha) const
+    {
+        return alpha * curr + (1.f - alpha) * prev;
+    }
 
     // LPFに使われる フィルター係数(又は平滑化係数)取得
-    float get_alpha(float dT, float cutoff) const;
+    float get_alpha(float dT, float cutoff) const
+    {
+        return 1.f / (1.f + 1.f / (two_pi * dT * cutoff));
+    }
 };

@@ -47,25 +47,3 @@ void PlayerState::update(sf::Vector2f received_pos)
     prev_vel = curr_vel;
     prev_pos = curr_pos;
 }
-
-sf::Vector2f PlayerState::get_curr_pos() const
-{
-    return curr_pos;
-}
-
-sf::Vector2f PlayerState::get_Euler_predict() const
-{
-    float predict_x = curr_pos.x + curr_vel.x * (prediction_steps * dT);
-    float predict_y = curr_pos.y + curr_vel.y * (prediction_steps * dT);
-    return {predict_x, predict_y};
-}
-
-float PlayerState::solve_LPF(float curr, float prev, float alpha) const
-{
-    return alpha * curr + (1.f - alpha) * prev;
-}
-
-float PlayerState::get_alpha(float dT, float cutoff) const
-{
-    return 1.f / (1.f + 1.f / (two_pi * dT * cutoff));
-}
