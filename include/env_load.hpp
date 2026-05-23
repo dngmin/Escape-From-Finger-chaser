@@ -2,21 +2,26 @@
 #include <string>
 #include <stdexcept>
 
+// 例外処理
 class envError : public std::runtime_error
 {
 public:
-    enum class Type 
+    enum class Error 
     {
         FILE_NOT_FOUND = -1,
         PORT_NUMBER_NOT_NONNEGATIVE_INTEGER = -2,
         PORT_NUMBER_NOT_FOUND = -3
     };
-    explicit envError(Type type, const std::string& msg);
+
+    // 初期化
+    explicit envError(Error error, const std::string& msg);
     
-    Type getType() const noexcept {return error_type;}
+    // エラーコード取得
+    Error getError() const noexcept {return errorCode;}
 
 private:
-    Type error_type;
+    Error errorCode;
 };
 
+// port number取得
 int get_port_number(const std::string& filename = "../.env");

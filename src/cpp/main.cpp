@@ -72,13 +72,13 @@ int main()
     {
         std::cout << e.what() << std::endl;
         
-        switch (e.getType())
+        switch (e.getError())
         {
-            case envError::Type::FILE_NOT_FOUND:
+            case envError::Error::FILE_NOT_FOUND:
                 red_message("→ 解決方法: .envファイルがあるか又はPathを確認してください"); break;
-            case envError::Type::PORT_NUMBER_NOT_NONNEGATIVE_INTEGER:
+            case envError::Error::PORT_NUMBER_NOT_NONNEGATIVE_INTEGER:
                 red_message("→ 解決方法: .envファイルのport_numerを確認してください"); break;
-            case envError::Type::PORT_NUMBER_NOT_FOUND:
+            case envError::Error::PORT_NUMBER_NOT_FOUND:
                 red_message("→ 解決方法: .envファイルにport_numberがあるか確認してください"); break;
         }
     }
