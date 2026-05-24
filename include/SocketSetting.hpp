@@ -29,7 +29,7 @@ class SocketSetting
 public:
     void init();
 
-    sf::Vector2f get_received_pos()
+    sf::Vector2f get_received_pos() const
     {
         return received_pos;
     }
