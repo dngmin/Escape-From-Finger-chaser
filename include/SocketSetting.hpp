@@ -27,6 +27,8 @@ private:
 class SocketSetting
 {
 public:
+    SocketSetting();
+
     void init();
 
     sf::Vector2f get_received_pos() const

@@ -4,6 +4,11 @@
 SocketError::SocketError(Error error, const std::string& msg)
     : std::runtime_error("\033[31m" + msg + "\033[0m"), errorCode(error) {}
 
+SocketSetting::SocketSetting()
+{
+    init();
+}
+
 void SocketSetting::init()
 {
     // 受信待機遅延をなくすためノンブロッキング設定

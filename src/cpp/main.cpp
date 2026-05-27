@@ -100,6 +100,14 @@ public:
         }
     }
 
+    void Render()
+    {
+        window.clear(sf::Color::Black);
+        window.draw(player);
+        for (auto& chaser : chasers) window.draw(chaser.chaser_shape);
+        window.display();
+    }
+
 private:
     void initPlayer()
     {
@@ -131,7 +139,6 @@ int main()
     {
         // Udp Socket 初期化
         SocketSetting socket_setting;
-        socket_setting.init();
         
         // SFML 初期化
         GraphicsEngine graphics_engine;
@@ -158,9 +165,6 @@ int main()
             }
 
             // 敵の追跡アルゴリズム
-            
-            // 単純追跡
-            // for (auto& chaser : chasers) chasing(chaser, player_state.get_curr_pos(), window_size);
             for (int i = 0; i < 4; i++)
             {
                 if (i < 2) chasing(graphics_engine.chasers[i], player_state.get_curr_pos(), graphics_engine.window_size);
@@ -168,11 +172,7 @@ int main()
             }
 
             // 描画
-            graphics_engine.window.clear(sf::Color::Black);
-            graphics_engine.window.draw(graphics_engine.player);
-            for (auto& chaser : graphics_engine.chasers) graphics_engine.window.draw(chaser.chaser_shape);
-
-            graphics_engine.window.display();
+            graphics_engine.Render();
 
             // 敵への当たり判定
             for (const auto& chaser : graphics_engine.chasers)
