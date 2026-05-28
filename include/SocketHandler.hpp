@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
-#include "env_load.hpp"
+#include "ConfigLoader.hpp"
 
 // 例外処理
 class SocketError : public std::runtime_error
@@ -24,10 +24,10 @@ private:
     Error errorCode;
 };
 
-class SocketSetting
+class SocketHandler
 {
 public:
-    SocketSetting();
+    SocketHandler();
 
     void init();
 
@@ -40,7 +40,7 @@ public:
     bool receive();
 
 private:
-    const int port_number = get_port_number();
+    const int port_number = LoadPortNumber();
     sf::UdpSocket socket;
     std::size_t received;
     std::optional<sf::IpAddress> sender;

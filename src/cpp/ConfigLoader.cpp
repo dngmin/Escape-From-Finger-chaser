@@ -1,16 +1,16 @@
-#include "env_load.hpp"
+#include "ConfigLoader.hpp"
 #include <fstream>
 #include <sstream>
 
 // 例外処理
-envError::envError(Error error, const std::string& msg)
+ConfigError::ConfigError(Error error, const std::string& msg)
     : std::runtime_error("\033[31m" + msg + "\033[0m"), errorCode(error) {}
 
 
-int get_port_number(const std::string& filename)
+int LoadPortNumber(const std::string& filename)
 {
     std::ifstream file(filename);
-    if (!file.is_open()) throw envError(envError::Error::FILE_NOT_FOUND,"[Error] .envファイルを開くことができません");
+    if (!file.is_open()) throw ConfigError(ConfigError::Error::FILE_NOT_FOUND,"[Error] .envファイルを開くことができません");
 
     // 読み込みアルゴリズム
     // .envを一行ずつ読み込む。
@@ -40,15 +40,15 @@ int get_port_number(const std::string& filename)
                 }
                 catch (const std::exception& e)
                 {
-                    throw envError(envError::Error::PORT_NUMBER_NOT_NONNEGATIVE_INTEGER,"[Error] port numberは非負整数である必要があります");
+                    throw ConfigError(ConfigError::Error::PORT_NUMBER_NOT_NONNEGATIVE_INTEGER,"[Error] port numberは非負整数である必要があります");
                 }
                 if (processed_length != value.length() || port_number <= 0)
                 {
-                    throw envError(envError::Error::PORT_NUMBER_NOT_NONNEGATIVE_INTEGER,"[Error] port numberは非負整数である必要があります");
+                    throw ConfigError(ConfigError::Error::PORT_NUMBER_NOT_NONNEGATIVE_INTEGER,"[Error] port numberは非負整数である必要があります");
                 }
                 return port_number;
             }
         }
     }
-    throw envError(envError::Error::PORT_NUMBER_NOT_FOUND, "[Error] port numberが見つかりません");
+    throw ConfigError(ConfigError::Error::PORT_NUMBER_NOT_FOUND, "[Error] port numberが見つかりません");
 }

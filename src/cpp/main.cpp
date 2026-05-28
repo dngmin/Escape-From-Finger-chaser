@@ -5,10 +5,10 @@
 #include <stdexcept>
 
 // Socket設定
-#include "SocketSetting.hpp"
+#include "SocketHandler.hpp"
 
 // Plyaer状態関連
-#include "Player.hpp"
+#include "PlayerState.hpp"
 
 // SFML
 #include <SFML/Graphics.hpp>
@@ -138,7 +138,7 @@ int main()
     try
     {
         // Udp Socket 初期化
-        SocketSetting socket_setting;
+        SocketHandler socket_handler;
         
         // SFML 初期化
         GraphicsEngine graphics_engine;
@@ -152,9 +152,9 @@ int main()
             graphics_engine.UpdateWindowEvent();
             
             // Socket通信
-            if (socket_setting.receive())
+            if (socket_handler.receive())
             {
-                sf::Vector2f received_pos = socket_setting.get_received_pos();
+                sf::Vector2f received_pos = socket_handler.get_received_pos();
 
                 // Player State Update
                 player_state.update(received_pos);
@@ -185,17 +185,17 @@ int main()
 
         }
     }
-    catch (const envError& e)
+    catch (const ConfigError& e)
     {
         std::cout << e.what() << std::endl;
         
         switch (e.getError())
         {
-            case envError::Error::FILE_NOT_FOUND:
+            case ConfigError::Error::FILE_NOT_FOUND:
                 red_message("→ 解決方法: .envファイルがあるか又はPathを確認してください"); break;
-            case envError::Error::PORT_NUMBER_NOT_NONNEGATIVE_INTEGER:
+            case ConfigError::Error::PORT_NUMBER_NOT_NONNEGATIVE_INTEGER:
                 red_message("→ 解決方法: .envファイルのport_numerを確認してください"); break;
-            case envError::Error::PORT_NUMBER_NOT_FOUND:
+            case ConfigError::Error::PORT_NUMBER_NOT_FOUND:
                 red_message("→ 解決方法: .envファイルにport_numberがあるか確認してください"); break;
         }
     }

@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 // 例外処理
-class envError : public std::runtime_error
+class ConfigError : public std::runtime_error
 {
 public:
     enum class Error 
@@ -14,7 +14,7 @@ public:
     };
 
     // 初期化
-    explicit envError(Error error, const std::string& msg);
+    explicit ConfigError(Error error, const std::string& msg);
     
     // エラーコード取得
     Error getError() const noexcept {return errorCode;}
@@ -24,4 +24,4 @@ private:
 };
 
 // port number取得
-int get_port_number(const std::string& filename = "../.env");
+int LoadPortNumber(const std::string& filename = "../.env");
