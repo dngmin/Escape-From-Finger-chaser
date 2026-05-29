@@ -8,7 +8,8 @@
 #include "SocketHandler.hpp"
 
 // Plyaer状態関連
-#include "PlayerState.hpp"
+#include "Player.hpp"
+// #include "PlayerState.hpp"
 
 // SFML
 #include <SFML/Graphics.hpp>
@@ -55,7 +56,6 @@ public:
     sf::RenderWindow window;
 
     // Entities
-    Entity player;
     std::vector<Entity> chasers;
     static constexpr int chaserCount = 4;
     static constexpr float player_size_rad = 10.f;
@@ -76,7 +76,7 @@ public:
         }
     }
 
-    void Render()
+    void Render(const Entity& player)
     {
         window.clear(sf::Color::Black);
         window.draw(player.entity);
@@ -87,16 +87,6 @@ public:
 private:
     void SetupObject()
     {
-        // Player components
-        sf::Vector2f player_init_pos = {0.5f * window_size.x, 0.5f * window_size.y};
-        sf::Color player_color(255, 255, 255);
-        
-        player.init(
-            player_init_pos,
-            player_size_rad,
-            sf::Color::White
-        );
-
         // Chaser components
         std::vector<sf::Vector2f> chasers_init_pos = {{0.1, 0.1}, {0.9, 0.1}, {0.1, 0.9}, {0.9, 0.9}};
         std::vector<sf::Color> chasers_color = {{255, 0, 0}, {0, 255, 0}, {0, 255, 255}, {255, 255, 0}};
@@ -124,7 +114,8 @@ int main()
         GraphicsEngine graphics_engine;
 
         // player position 初期化
-        PlayerState player_state;
+        Player player;
+        player.init({0.5f, 0.5f}, 10.f, {255, 255, 255});
 
         while (graphics_engine.window.isOpen())
         {
@@ -137,27 +128,28 @@ int main()
                 sf::Vector2f received_pos = socket_handler.get_received_pos();
 
                 // Player State Update
-                player_state.update(received_pos);
+                player.update(received_pos, graphics_engine.window_size);
+                // player_state.update(received_pos);
 
-                // set player
-                sf::Vector2f curr_pos = player_state.get_curr_pos();
-                graphics_engine.player.entity.setPosition({curr_pos.x * graphics_engine.window_size.x, curr_pos.y * graphics_engine.window_size.y});
+                // // set player
+                // sf::Vector2f curr_pos = player_state.get_curr_pos();
+                // graphics_engine.player.entity.setPosition({curr_pos.x * graphics_engine.window_size.x, curr_pos.y * graphics_engine.window_size.y});
             }
 
             // 敵の追跡アルゴリズム
             for (int i = 0; i < graphics_engine.chaserCount; i++)
             {
-                if (i < 2) chasing(graphics_engine.chasers[i], player_state.get_curr_pos(), graphics_engine.window_size);
-                else chasing(graphics_engine.chasers[i], player_state.get_Euler_predict(), graphics_engine.window_size);
+                if (i < 2) chasing(graphics_engine.chasers[i], player.getPosition(), graphics_engine.window_size);
+                else chasing(graphics_engine.chasers[i], player.getEulerPredict(), graphics_engine.window_size);
             }
 
             // 描画
-            graphics_engine.Render();
+            graphics_engine.Render(player.getEntity());
 
             // 敵への当たり判定
             for (const auto& chaser : graphics_engine.chasers)
             {
-                if (getDistance_square(player_state.get_curr_pos(), chaser.position, graphics_engine.window_size) < ((graphics_engine.player_size_rad + graphics_engine.chaser_size_rad) * (graphics_engine.player_size_rad + graphics_engine.chaser_size_rad)))
+                if (getDistance_square(player.getPosition(), chaser.position, graphics_engine.window_size) < ((graphics_engine.player_size_rad + graphics_engine.chaser_size_rad) * (graphics_engine.player_size_rad + graphics_engine.chaser_size_rad)))
                 {
                     return 0;
                 }

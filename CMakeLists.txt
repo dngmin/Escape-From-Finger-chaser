@@ -10,11 +10,14 @@ find_package(SFML 3 REQUIRED COMPONENTS Graphics Network)
 add_executable(${PROJECT_NAME}
     src/cpp/main.cpp
 
+    src/cpp/Player.cpp
+
     src/cpp/PlayerState.cpp
     src/cpp/ConfigLoader.cpp
     src/cpp/SocketHandler.cpp
     src/cpp/Entity.cpp
 
+    include/Player.hpp
     include/PlayerState.hpp
     include/ConfigLoader.hpp
     include/SocketHandler.hpp
