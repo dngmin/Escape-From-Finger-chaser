@@ -33,7 +33,7 @@ void red_message(std::string msg)
 class Entity
 {
 public:
-    void init(sf::Vector2f init_pos, float rad, sf::Color color)
+    void init(const sf::Vector2f& init_pos, float rad, const sf::Color& color)
     {
         this->position = init_pos;
         this->rad = rad;

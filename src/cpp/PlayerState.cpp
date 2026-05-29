@@ -3,7 +3,7 @@
 
 // 現在位置生データから1€ filterを用いて補正
 // 既存のLow Pass Filterでの固定されたフィルター係数を可変的にした手法
-void PlayerState::update(sf::Vector2f received_pos)
+void PlayerState::update(const sf::Vector2f& received_pos)
 {
     // 1€ filterの実装
     TimePoint T = Clock::now();

@@ -10,7 +10,7 @@ class PlayerState
 
 public:
     // 1€ filterを用いたPlayerのデータアップデート
-    void update(sf::Vector2f received_pos);
+    void update(const sf::Vector2f& received_pos);
 
     // Playerの現在位置を取得
     sf::Vector2f get_curr_pos() const {return curr_pos;}
