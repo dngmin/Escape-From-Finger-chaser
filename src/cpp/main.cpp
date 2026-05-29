@@ -13,6 +13,7 @@
 // SFML
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
+#include "Entity.hpp"
 
 // function
 float float_square(float x)
@@ -29,25 +30,6 @@ void red_message(std::string msg)
 {
     std::cout << "\033[31m" << msg << "\033[0m" << std::endl;
 }
-
-class Entity
-{
-public:
-    void init(const sf::Vector2f& init_pos, float rad, const sf::Color& color)
-    {
-        this->position = init_pos;
-        this->rad = rad;
-        this->color = color;
-        entity.setPosition({init_pos.x, init_pos.y});
-        entity.setRadius(rad);
-        entity.setOrigin({rad, rad});
-        entity.setFillColor(color);
-    };
-    sf::CircleShape entity;
-    sf::Vector2f position;
-    float rad;
-    sf::Color color;
-};
 
 void chasing(Entity& chaser, const sf::Vector2f& target_pos, sf::Vector2u window_size, float chasing_speed = 5e-5)
 {
@@ -75,9 +57,9 @@ public:
     // Entities
     Entity player;
     std::vector<Entity> chasers;
-    static const int chaserCount = 4;
-    float player_size_rad = 10.f;
-    float chaser_size_rad = 10.f;
+    static constexpr int chaserCount = 4;
+    static constexpr float player_size_rad = 10.f;
+    static constexpr float chaser_size_rad = 10.f;
 
     void UpdateWindowEvent()
     {

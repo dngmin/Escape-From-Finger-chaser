@@ -13,10 +13,12 @@ add_executable(${PROJECT_NAME}
     src/cpp/PlayerState.cpp
     src/cpp/ConfigLoader.cpp
     src/cpp/SocketHandler.cpp
+    src/cpp/Entity.cpp
 
     include/PlayerState.hpp
     include/ConfigLoader.hpp
     include/SocketHandler.hpp
+    include/Entity.hpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
