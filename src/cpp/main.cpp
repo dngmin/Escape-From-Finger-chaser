@@ -14,13 +14,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 
-// struct
-struct chaser_State
-{
-    sf::CircleShape chaser_shape;
-    sf::Vector2f position;
-};
-
 // function
 float float_square(float x)
 {
@@ -32,58 +25,59 @@ float getDistance_square(const sf::Vector2f& A, const sf::Vector2f& B, const sf:
     return (float_square(window_size.x * (A.x - B.x)) + float_square(window_size.y * (A.y - B.y)));
 }
 
-void chasers_initialize(std::vector<chaser_State>& chasers, sf::Vector2u window_size, float rad)
-{
-    std::vector<sf::Vector2f> init_pos = {{0.1, 0.1}, {0.9, 0.1}, {0.1, 0.9}, {0.9, 0.9}};
-    std::vector<std::vector<uint8_t>> init_color = {{255, 0, 0}, {0, 255, 0}, {0, 255, 255}, {255, 255, 0}};
-    for (int i = 0; i < 4; i++)
-    {
-        chasers[i].position = init_pos[i];
-        init_pos[i].x *= window_size.x;
-        init_pos[i].y *= window_size.y;
-        chasers[i].chaser_shape.setRadius(rad);
-        chasers[i].chaser_shape.setOrigin({rad, rad});
-        chasers[i].chaser_shape.setPosition(init_pos[i]);
-        chasers[i].chaser_shape.setFillColor(sf::Color(init_color[i][0], init_color[i][1], init_color[i][2]));
-    }
-}
-
-void chasing(chaser_State& chaser, const sf::Vector2f& target_pos, sf::Vector2u window_size, float chasing_speed = 5e-5)
-{
-    float v = sqrt(float_square(target_pos.x - chaser.position.x) + float_square(target_pos.y - chaser.position.y));
-    chaser.position.x += (target_pos.x - chaser.position.x)/v * chasing_speed;
-    chaser.position.y += (target_pos.y - chaser.position.y)/v * chasing_speed;
-    chaser.chaser_shape.setPosition({window_size.x * (chaser.position.x), window_size.y * (chaser.position.y)});
-}
-
 void red_message(std::string msg)
 {
     std::cout << "\033[31m" << msg << "\033[0m" << std::endl;
 }
 
+class Entity
+{
+public:
+    void init(sf::Vector2f init_pos, float rad, sf::Color color)
+    {
+        this->position = init_pos;
+        this->rad = rad;
+        this->color = color;
+        entity.setPosition({init_pos.x, init_pos.y});
+        entity.setRadius(rad);
+        entity.setOrigin({rad, rad});
+        entity.setFillColor(color);
+    };
+    sf::CircleShape entity;
+    sf::Vector2f position;
+    float rad;
+    sf::Color color;
+};
+
+void chasing(Entity& chaser, const sf::Vector2f& target_pos, sf::Vector2u window_size, float chasing_speed = 5e-5)
+{
+    float v = sqrt(float_square(target_pos.x - chaser.position.x) + float_square(target_pos.y - chaser.position.y));
+    chaser.position.x += (target_pos.x - chaser.position.x)/v * chasing_speed;
+    chaser.position.y += (target_pos.y - chaser.position.y)/v * chasing_speed;
+    chaser.entity.setPosition({window_size.x * (chaser.position.x), window_size.y * (chaser.position.y)});
+}
+
 class GraphicsEngine
 {
 public:
-    GraphicsEngine() :
-        window(sf::VideoMode(window_size), window_title),
-        player(player_size_rad),
-        chasers(4)
+    GraphicsEngine()
+        : window(sf::VideoMode(window_size), window_title)
+        , chasers(chaserCount)
         {
-            initPlayer();
-            initChaser();
-        };
+            SetupObject();
+        }
 
     // windw
     static constexpr const char* window_title = "Escape from Finger chaser";
     sf::Vector2u window_size = {800, 600};
     sf::RenderWindow window;
 
-    // Object
-    static constexpr float player_size_rad = 10.f;
-    static constexpr float chaser_size_rad = 10.f;
-
-    sf::CircleShape player;
-    std::vector<chaser_State> chasers;
+    // Entities
+    Entity player;
+    std::vector<Entity> chasers;
+    static const int chaserCount = 4;
+    float player_size_rad = 10.f;
+    float chaser_size_rad = 10.f;
 
     void UpdateWindowEvent()
     {
@@ -103,34 +97,38 @@ public:
     void Render()
     {
         window.clear(sf::Color::Black);
-        window.draw(player);
-        for (auto& chaser : chasers) window.draw(chaser.chaser_shape);
+        window.draw(player.entity);
+        for (auto& chaser : chasers) window.draw(chaser.entity);
         window.display();
     }
 
 private:
-    void initPlayer()
+    void SetupObject()
     {
-        sf::Vector2f init_pos = {0.5, 0.5};
-        player.setOrigin({player_size_rad, player_size_rad});
-        player.setPosition({init_pos.x * window_size.x, init_pos.y * window_size.y});
-    };
+        // Player components
+        sf::Vector2f player_init_pos = {0.5f * window_size.x, 0.5f * window_size.y};
+        sf::Color player_color(255, 255, 255);
+        
+        player.init(
+            player_init_pos,
+            player_size_rad,
+            sf::Color::White
+        );
 
-    void initChaser()
-    {
-    std::vector<sf::Vector2f> init_pos = {{0.1, 0.1}, {0.9, 0.1}, {0.1, 0.9}, {0.9, 0.9}};
-    std::vector<std::vector<uint8_t>> init_color = {{255, 0, 0}, {0, 255, 0}, {0, 255, 255}, {255, 255, 0}};
-    for (int i = 0; i < 4; i++)
-    {
-        chasers[i].position = init_pos[i];
-        init_pos[i].x *= window_size.x;
-        init_pos[i].y *= window_size.y;
-        chasers[i].chaser_shape.setRadius(chaser_size_rad);
-        chasers[i].chaser_shape.setOrigin({chaser_size_rad, chaser_size_rad});
-        chasers[i].chaser_shape.setPosition(init_pos[i]);
-        chasers[i].chaser_shape.setFillColor(sf::Color(init_color[i][0], init_color[i][1], init_color[i][2]));
+        // Chaser components
+        std::vector<sf::Vector2f> chasers_init_pos = {{0.1, 0.1}, {0.9, 0.1}, {0.1, 0.9}, {0.9, 0.9}};
+        std::vector<sf::Color> chasers_color = {{255, 0, 0}, {0, 255, 0}, {0, 255, 255}, {255, 255, 0}};
+        for (int i = 0; i < chaserCount; i++)
+        {
+            // chasers_init_pos[i].x *= window_size.x;
+            // chasers_init_pos[i].y *= window_size.y;
+            chasers[i].init(
+                chasers_init_pos[i],
+                chaser_size_rad,
+                chasers_color[i]
+            );
+        }
     }
-    };
 };
 
 int main()
@@ -161,11 +159,11 @@ int main()
 
                 // set player
                 sf::Vector2f curr_pos = player_state.get_curr_pos();
-                graphics_engine.player.setPosition({curr_pos.x * graphics_engine.window_size.x, curr_pos.y * graphics_engine.window_size.y});
+                graphics_engine.player.entity.setPosition({curr_pos.x * graphics_engine.window_size.x, curr_pos.y * graphics_engine.window_size.y});
             }
 
             // 敵の追跡アルゴリズム
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < graphics_engine.chaserCount; i++)
             {
                 if (i < 2) chasing(graphics_engine.chasers[i], player_state.get_curr_pos(), graphics_engine.window_size);
                 else chasing(graphics_engine.chasers[i], player_state.get_Euler_predict(), graphics_engine.window_size);
