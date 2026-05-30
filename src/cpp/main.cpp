@@ -4,6 +4,8 @@
 #include <string>
 #include <stdexcept>
 
+#include "Utils.hpp"
+
 // Socket設定
 #include "SocketHandler.hpp"
 
@@ -14,17 +16,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include "Entity.hpp"
-
-// function
-float float_square(float x)
-{
-    return x * x;
-}
-
-float getDistance_square(const sf::Vector2f& A, const sf::Vector2f& B, const sf::Vector2u& window_size)
-{
-    return (float_square(window_size.x * (A.x - B.x)) + float_square(window_size.y * (A.y - B.y)));
-}
 
 void red_message(std::string msg)
 {
@@ -39,9 +30,9 @@ public:
         , speed(chasing_speed)
     {}
 
-    void update(const sf::Vector2f target_pos)
+    void update(const sf::Vector2f& target_pos)
     {
-        float distance = sqrt(float_square(target_pos.x - position.x) + float_square(target_pos.y - position.y));
+        float distance = sqrt(Square(target_pos.x - position.x) + Square(target_pos.y - position.y));
         position.x += (target_pos.x - position.x) / distance * speed;
         position.y += (target_pos.y - position.y) / distance * speed;
     }
@@ -168,7 +159,7 @@ int main()
             // 敵への当たり判定
             for (const auto& chaser : {chaser1, chaser2, chaser3, chaser4})
             {
-                if (getDistance_square(player.getPosition(), chaser.getPosition(), graphics_engine.window_size) < float_square(playerSize + chaserSize))
+                if (getDistance(player.getPosition(), chaser.getPosition(), graphics_engine.window_size) < (playerSize + chaserSize))
                 {
                     return 0;
                 }
