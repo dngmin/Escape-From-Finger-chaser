@@ -11,65 +11,16 @@
 
 // Plyaer状態関連
 #include "Player.hpp"
+#include "Chaser.hpp"
 
 // SFML
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
-#include "Entity.hpp"
 
 void red_message(std::string msg)
 {
     std::cout << "\033[31m" << msg << "\033[0m" << std::endl;
 }
-
-class ChaserState
-{
-public:
-    ChaserState(sf::Vector2f init_pos, float chasing_speed = 5e-5)
-        : position(init_pos)
-        , speed(chasing_speed)
-    {}
-
-    void update(const sf::Vector2f& target_pos)
-    {
-        float distance = sqrt(Square(target_pos.x - position.x) + Square(target_pos.y - position.y));
-        position.x += (target_pos.x - position.x) / distance * speed;
-        position.y += (target_pos.y - position.y) / distance * speed;
-    }
-
-    sf::Vector2f get_curr_pos() const {return position;}
-
-private:
-    sf::Vector2f position;
-    const float speed;
-};
-
-class Chaser
-{
-public:
-    Chaser(const sf::Vector2f& init_pos, float rad, const sf::Color& color)
-        : state(init_pos)
-        , entity(init_pos, rad, color)
-    {}
-
-    void update(sf::Vector2f target_pos, sf::Vector2u window_size)
-    {
-        state.update(target_pos);
-        sf::Vector2f curr_pos = state.get_curr_pos();
-        entity.entity.setPosition({curr_pos.x * window_size.x, curr_pos.y * window_size.y});
-    }
-
-    sf::Vector2f getPosition() const
-    {
-        return state.get_curr_pos();
-    }
-
-    const Entity getEntity() const {return entity;}
-
-private:
-    ChaserState state;
-    Entity entity;
-};
 
 class GraphicsEngine
 {

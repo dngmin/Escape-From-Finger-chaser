@@ -11,15 +11,18 @@ add_executable(${PROJECT_NAME}
     src/cpp/main.cpp
 
     src/cpp/Player.cpp
-
+    src/cpp/Chaser.cpp
     src/cpp/PlayerState.cpp
+    src/cpp/ChaserState.cpp
     src/cpp/ConfigLoader.cpp
     src/cpp/SocketHandler.cpp
     src/cpp/Entity.cpp
     src/cpp/Utils.cpp
 
     include/Player.hpp
+    include/Chaser.hpp
     include/PlayerState.hpp
+    include/ChaserState.hpp
     include/ConfigLoader.hpp
     include/SocketHandler.hpp
     include/Entity.hpp
