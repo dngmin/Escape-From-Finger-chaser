@@ -9,6 +9,8 @@ class PlayerState
     using TimePoint = std::chrono::time_point<Clock>;
 
 public:
+    void init(sf::Vector2f init_pos);
+
     // 1€ filterを用いたPlayerのデータアップデート
     void update(const sf::Vector2f& received_pos);
 
@@ -26,8 +28,8 @@ public:
 
 private:
     // Playerのデータ
-    sf::Vector2f curr_pos = {0.5f, 0.5f}; // 現在位置
-    sf::Vector2f prev_pos = {0.f, 0.f}; // 過去の位置
+    sf::Vector2f curr_pos; // 現在位置
+    sf::Vector2f prev_pos; // 過去の位置
     sf::Vector2f curr_vel = {0.f, 0.f}; // 現在速度
     sf::Vector2f prev_vel = {0.f, 0.f}; // 過去の速度
 

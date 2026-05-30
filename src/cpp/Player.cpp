@@ -2,6 +2,7 @@
 
 void Player::init(const sf::Vector2f& init_pos, float rad, const sf::Color& color)
 {
+    state.init(init_pos);
     entity.init(init_pos, rad, color);
 }
 

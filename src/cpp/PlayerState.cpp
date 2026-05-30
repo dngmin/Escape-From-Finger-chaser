@@ -1,6 +1,12 @@
 #include "PlayerState.hpp"
 #include <cmath>
 
+void PlayerState::init(sf::Vector2f init_pos)
+{
+    curr_pos = init_pos;
+    prev_pos = init_pos;
+}
+
 // 現在位置生データから1€ filterを用いて補正
 // 既存のLow Pass Filterでの固定されたフィルター係数を可変的にした手法
 void PlayerState::update(const sf::Vector2f& received_pos)

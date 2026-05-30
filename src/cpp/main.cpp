@@ -9,7 +9,6 @@
 
 // Plyaer状態関連
 #include "Player.hpp"
-// #include "PlayerState.hpp"
 
 // SFML
 #include <SFML/Graphics.hpp>
@@ -115,6 +114,7 @@ int main()
 
         // player position 初期化
         Player player;
+        // 初期位置、Entityサイズ、色
         player.init({0.5f, 0.5f}, 10.f, {255, 255, 255});
 
         while (graphics_engine.window.isOpen())
@@ -129,11 +129,6 @@ int main()
 
                 // Player State Update
                 player.update(received_pos, graphics_engine.window_size);
-                // player_state.update(received_pos);
-
-                // // set player
-                // sf::Vector2f curr_pos = player_state.get_curr_pos();
-                // graphics_engine.player.entity.setPosition({curr_pos.x * graphics_engine.window_size.x, curr_pos.y * graphics_engine.window_size.y});
             }
 
             // 敵の追跡アルゴリズム
