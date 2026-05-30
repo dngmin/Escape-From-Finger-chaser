@@ -44,7 +44,6 @@ class GraphicsEngine
 public:
     GraphicsEngine()
         : window(sf::VideoMode(window_size), window_title)
-        , chasers(chaserCount)
         {
             SetupObject();
         }
@@ -91,9 +90,7 @@ private:
         std::vector<sf::Color> chasers_color = {{255, 0, 0}, {0, 255, 0}, {0, 255, 255}, {255, 255, 0}};
         for (int i = 0; i < chaserCount; i++)
         {
-            // chasers_init_pos[i].x *= window_size.x;
-            // chasers_init_pos[i].y *= window_size.y;
-            chasers[i].init(
+            chasers.emplace_back(
                 chasers_init_pos[i],
                 chaser_size_rad,
                 chasers_color[i]
@@ -113,9 +110,8 @@ int main()
         GraphicsEngine graphics_engine;
 
         // player position 初期化
-        Player player;
         // 初期位置、Entityサイズ、色
-        player.init({0.5f, 0.5f}, 10.f, {255, 255, 255});
+        Player player({0.5f, 0.5f}, 10.f, {255, 255, 255});
 
         while (graphics_engine.window.isOpen())
         {

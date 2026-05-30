@@ -4,7 +4,7 @@
 class Entity
 {
 public:
-    void init(const sf::Vector2f& init_pos, float rad, const sf::Color& color);
+    Entity(const sf::Vector2f& init_pos, float rad, const sf::Color& color);
     sf::CircleShape entity;
     sf::Vector2f position;
 private:

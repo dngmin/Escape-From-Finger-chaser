@@ -5,11 +5,7 @@ SocketError::SocketError(Error error, const std::string& msg)
     : std::runtime_error("\033[31m" + msg + "\033[0m"), errorCode(error) {}
 
 SocketHandler::SocketHandler()
-{
-    init();
-}
-
-void SocketHandler::init()
+    : port_number(LoadPortNumber())
 {
     // 受信待機遅延をなくすためノンブロッキング設定
     socket.setBlocking(false);

@@ -5,7 +5,7 @@
 class Player
 {
 public:
-    void init(const sf::Vector2f& init_pos, float rad, const sf::Color& color);
+    Player(const sf::Vector2f& init_pos, float rad, const sf::Color& color);
 
     void update(const sf::Vector2f& received_pos, const sf::Vector2u& window_size);
 

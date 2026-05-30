@@ -29,8 +29,6 @@ class SocketHandler
 public:
     SocketHandler();
 
-    void init();
-
     sf::Vector2f get_received_pos() const
     {
         return received_pos;
@@ -40,7 +38,7 @@ public:
     bool receive();
 
 private:
-    const int port_number = LoadPortNumber();
+    const int port_number;
     sf::UdpSocket socket;
     std::size_t received;
     std::optional<sf::IpAddress> sender;
