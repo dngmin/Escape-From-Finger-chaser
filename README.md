@@ -140,23 +140,26 @@ python src/python/hand_tracking.py
 ```
 
 ## Current Challenges & Future Improvements
-- mainコードからfunction, class, structのファイル分け
-    - [x] Python
-    - [ ] C++
-- 例外処理
-    - [x] Python
-    - [ ] C++
-- 敵の動き追加
-    - [x] 単純追跡
-    - [x] オイラー法
-    - [ ] ランダム動き
-    - [ ] 未定
-- python mediapipeのrunning_modeをLIVE_STREAMに変更
-    - call backを用いてデータ送信をmain loopから外せる
-- hand_tracking.pyとmain.cppを同時に実行するファイル作成
-- edgeでの異常の動き発生対策
-- 高速で手を動かすと生じるフレームドロップ及びテレポート対策
-- chaserたちの位置が重なる時での対策
-- プレイヤーが止まっているとき生じる意図してないchaser騙し対策
-- Program Flowをmermaidに変更
-- ビジュアルアップグレード(背景、プレイヤー、敵など)
+- 進行中
+    - mainコードからfunction, class, structのファイル分け
+        - [x] Python
+        - [ ] C++
+    - 例外処理
+        - [x] Python
+        - [ ] C++
+- 予定
+    - 敵の動き追加
+        - [x] 単純追跡
+        - [x] オイラー法
+        - [ ] ランダム動き
+        - [ ] 未定
+    - python mediapipeのrunning_modeをLIVE_STREAMに変更
+        - call backを用いてデータ送信をmain loopから外せる
+    - hand_tracking.pyとmain.cppを同時に実行するファイル作成
+    - edgeでの異常の動き発生対策
+    - 高速で手を動かすと生じるフレームドロップ及びテレポート対策
+    - chaserたちの位置が重なる時での対策
+    - プレイヤーが止まっているとき生じる意図してないchaser騙し対策
+    - Program Flowをmermaidに変更
+    - ビジュアルアップグレード(背景、プレイヤー、敵など)
+    - C++ヘッダーファイルで前方宣言を使用検討
