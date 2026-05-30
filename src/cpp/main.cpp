@@ -31,33 +31,66 @@ void red_message(std::string msg)
     std::cout << "\033[31m" << msg << "\033[0m" << std::endl;
 }
 
-void chasing(Entity& chaser, const sf::Vector2f& target_pos, sf::Vector2u window_size, float chasing_speed = 5e-5)
+class ChaserState
 {
-    float v = sqrt(float_square(target_pos.x - chaser.position.x) + float_square(target_pos.y - chaser.position.y));
-    chaser.position.x += (target_pos.x - chaser.position.x)/v * chasing_speed;
-    chaser.position.y += (target_pos.y - chaser.position.y)/v * chasing_speed;
-    chaser.entity.setPosition({window_size.x * (chaser.position.x), window_size.y * (chaser.position.y)});
-}
+public:
+    ChaserState(sf::Vector2f init_pos, float chasing_speed = 5e-5)
+        : position(init_pos)
+        , speed(chasing_speed)
+    {}
+
+    void update(const sf::Vector2f target_pos)
+    {
+        float distance = sqrt(float_square(target_pos.x - position.x) + float_square(target_pos.y - position.y));
+        position.x += (target_pos.x - position.x) / distance * speed;
+        position.y += (target_pos.y - position.y) / distance * speed;
+    }
+
+    sf::Vector2f get_curr_pos() const {return position;}
+
+private:
+    sf::Vector2f position;
+    const float speed;
+};
+
+class Chaser
+{
+public:
+    Chaser(const sf::Vector2f& init_pos, float rad, const sf::Color& color)
+        : state(init_pos)
+        , entity(init_pos, rad, color)
+    {}
+
+    void update(sf::Vector2f target_pos, sf::Vector2u window_size)
+    {
+        state.update(target_pos);
+        sf::Vector2f curr_pos = state.get_curr_pos();
+        entity.entity.setPosition({curr_pos.x * window_size.x, curr_pos.y * window_size.y});
+    }
+
+    sf::Vector2f getPosition() const
+    {
+        return state.get_curr_pos();
+    }
+
+    const Entity getEntity() const {return entity;}
+
+private:
+    ChaserState state;
+    Entity entity;
+};
 
 class GraphicsEngine
 {
 public:
     GraphicsEngine()
         : window(sf::VideoMode(window_size), window_title)
-        {
-            SetupObject();
-        }
+        {}
 
     // windw
     static constexpr const char* window_title = "Escape from Finger chaser";
     sf::Vector2u window_size = {800, 600};
     sf::RenderWindow window;
-
-    // Entities
-    std::vector<Entity> chasers;
-    static constexpr int chaserCount = 4;
-    static constexpr float player_size_rad = 10.f;
-    static constexpr float chaser_size_rad = 10.f;
 
     void UpdateWindowEvent()
     {
@@ -74,29 +107,15 @@ public:
         }
     }
 
-    void Render(const Entity& player)
+    void Render(const Player& player, const std::vector<Chaser>& chasers)
     {
         window.clear(sf::Color::Black);
-        window.draw(player.entity);
-        for (auto& chaser : chasers) window.draw(chaser.entity);
+        window.draw(player.getEntity().entity);
+        for (auto& chaser : chasers) window.draw(chaser.getEntity().entity);
         window.display();
     }
 
 private:
-    void SetupObject()
-    {
-        // Chaser components
-        std::vector<sf::Vector2f> chasers_init_pos = {{0.1, 0.1}, {0.9, 0.1}, {0.1, 0.9}, {0.9, 0.9}};
-        std::vector<sf::Color> chasers_color = {{255, 0, 0}, {0, 255, 0}, {0, 255, 255}, {255, 255, 0}};
-        for (int i = 0; i < chaserCount; i++)
-        {
-            chasers.emplace_back(
-                chasers_init_pos[i],
-                chaser_size_rad,
-                chasers_color[i]
-            );
-        }
-    }
 };
 
 int main()
@@ -109,9 +128,19 @@ int main()
         // SFML 初期化
         GraphicsEngine graphics_engine;
 
-        // player position 初期化
+        // オブジェクト初期化
         // 初期位置、Entityサイズ、色
-        Player player({0.5f, 0.5f}, 10.f, {255, 255, 255});
+        static constexpr float playerSize = 10.f, chaserSize = 10.f;
+        Player player({0.5f, 0.5f}, playerSize, {255, 255, 255});
+
+        // std::vector<sf::Vector2f> chasers_init_pos = {{0.1, 0.1}, {0.9, 0.1}, {0.1, 0.9}, {0.9, 0.9}};
+        // std::vector<sf::Color> chasers_color = {{255, 0, 0}, {0, 255, 0}, {0, 255, 255}, {255, 255, 0}};
+        Chaser chaser1({0.1, 0.1}, chaserSize, {255, 0, 0});
+        Chaser chaser2({0.9, 0.1}, chaserSize, {255, 0, 0});
+        Chaser chaser3({0.1, 0.9}, chaserSize, {0, 255, 0});
+        Chaser chaser4({0.9, 0.9}, chaserSize, {0, 255, 0});
+
+
 
         while (graphics_engine.window.isOpen())
         {
@@ -128,19 +157,18 @@ int main()
             }
 
             // 敵の追跡アルゴリズム
-            for (int i = 0; i < graphics_engine.chaserCount; i++)
-            {
-                if (i < 2) chasing(graphics_engine.chasers[i], player.getPosition(), graphics_engine.window_size);
-                else chasing(graphics_engine.chasers[i], player.getEulerPredict(), graphics_engine.window_size);
-            }
+            chaser1.update(player.getPosition(), graphics_engine.window_size);
+            chaser2.update(player.getPosition(), graphics_engine.window_size);
+            chaser3.update(player.getEulerPredict(), graphics_engine.window_size);
+            chaser4.update(player.getEulerPredict(), graphics_engine.window_size);
 
             // 描画
-            graphics_engine.Render(player.getEntity());
+            graphics_engine.Render(player, {chaser1, chaser2, chaser3, chaser4});
 
             // 敵への当たり判定
-            for (const auto& chaser : graphics_engine.chasers)
+            for (const auto& chaser : {chaser1, chaser2, chaser3, chaser4})
             {
-                if (getDistance_square(player.getPosition(), chaser.position, graphics_engine.window_size) < ((graphics_engine.player_size_rad + graphics_engine.chaser_size_rad) * (graphics_engine.player_size_rad + graphics_engine.chaser_size_rad)))
+                if (getDistance_square(player.getPosition(), chaser.getPosition(), graphics_engine.window_size) < float_square(playerSize + chaserSize))
                 {
                     return 0;
                 }
