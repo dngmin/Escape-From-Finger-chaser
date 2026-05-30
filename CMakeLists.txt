@@ -16,6 +16,7 @@ add_executable(${PROJECT_NAME}
     src/cpp/ConfigLoader.cpp
     src/cpp/SocketHandler.cpp
     src/cpp/Entity.cpp
+    src/cpp/Utils.cpp
 
     include/Player.hpp
     include/PlayerState.hpp
