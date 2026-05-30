@@ -9,7 +9,7 @@ class PlayerState
     using TimePoint = std::chrono::time_point<Clock>;
 
 public:
-    void init(sf::Vector2f init_pos);
+    void init(const sf::Vector2f& init_pos);
 
     // 1€ filterを用いたPlayerのデータアップデート
     void update(const sf::Vector2f& received_pos);

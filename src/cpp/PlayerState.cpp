@@ -1,7 +1,7 @@
 #include "PlayerState.hpp"
 #include <cmath>
 
-void PlayerState::init(sf::Vector2f init_pos)
+void PlayerState::init(const sf::Vector2f& init_pos)
 {
     curr_pos = init_pos;
     prev_pos = init_pos;
