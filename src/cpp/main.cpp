@@ -13,6 +13,9 @@
 #include "Player.hpp"
 #include "Chaser.hpp"
 
+// グラフィックスUI
+#include "GraphicsEngine.hpp"
+
 // SFML
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
@@ -22,44 +25,6 @@ void red_message(std::string msg)
     std::cout << "\033[31m" << msg << "\033[0m" << std::endl;
 }
 
-class GraphicsEngine
-{
-public:
-    GraphicsEngine()
-        : window(sf::VideoMode(window_size), window_title)
-        {}
-
-    // windw
-    static constexpr const char* window_title = "Escape from Finger chaser";
-    sf::Vector2u window_size = {800, 600};
-    sf::RenderWindow window;
-
-    void UpdateWindowEvent()
-    {
-        while (std::optional event = window.pollEvent())
-        {
-            if (event->is<sf::Event::Closed>()) window.close();
-
-            else if (const auto* resized = event->getIf<sf::Event::Resized>())
-            {
-                window_size = window.getSize();
-                sf::View view(sf::FloatRect({0.f, 0.f}, sf::Vector2f(window_size)));
-                window.setView(view);
-            }
-        }
-    }
-
-    void Render(const Player& player, const std::vector<Chaser>& chasers)
-    {
-        window.clear(sf::Color::Black);
-        window.draw(player.getEntity().entity);
-        for (auto& chaser : chasers) window.draw(chaser.getEntity().entity);
-        window.display();
-    }
-
-private:
-};
-
 int main()
 {
     try
@@ -68,7 +33,8 @@ int main()
         SocketHandler socket_handler;
         
         // SFML 初期化
-        GraphicsEngine graphics_engine;
+        // タイトル、サイズ、背景色
+        GraphicsEngine graphics_engine("game", {800, 600}, sf::Color::Black);
 
         // オブジェクト初期化
         // 初期位置、Entityサイズ、色
@@ -105,7 +71,13 @@ int main()
             chaser4.update(player.getEulerPredict(), graphics_engine.window_size);
 
             // 描画
-            graphics_engine.Render(player, {chaser1, chaser2, chaser3, chaser4});
+            graphics_engine.Render
+            (
+                player.getEntity(),
+                {chaser1.getEntity()
+                ,chaser2.getEntity()
+                ,chaser3.getEntity()
+                ,chaser4.getEntity()});
 
             // 敵への当たり判定
             for (const auto& chaser : {chaser1, chaser2, chaser3, chaser4})
