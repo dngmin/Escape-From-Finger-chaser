@@ -9,6 +9,7 @@ find_package(SFML 3 REQUIRED COMPONENTS Graphics Network)
 
 add_executable(${PROJECT_NAME}
     src/cpp/main.cpp
+    src/cpp/GameEngine.cpp
     src/cpp/GraphicsEngine.cpp
     src/cpp/Player.cpp
     src/cpp/Chaser.cpp
@@ -19,6 +20,7 @@ add_executable(${PROJECT_NAME}
     src/cpp/Entity.cpp
     src/cpp/Utils.cpp
 
+    include/GameEngine.hpp
     include/GraphicsEngine.hpp
     include/Player.hpp
     include/Chaser.hpp

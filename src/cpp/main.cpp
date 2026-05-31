@@ -1,48 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
+#include "GameEngine.hpp"
 #include "Utils.hpp"
-
-// Socket設定
-#include "SocketHandler.hpp"
-
-// Plyaer状態関連
-#include "Player.hpp"
-#include "Chaser.hpp"
-
-// グラフィックスUI
-#include "GraphicsEngine.hpp"
 
 void red_message(std::string msg)
 {
     std::cout << "\033[31m" << msg << "\033[0m" << std::endl;
 }
-
-class GameEngine
-{
-public:
-    GameEngine(const GameConfig& config)
-        : graphics_engine(config.window_config)
-        , player(config.player_config)
-    {
-        // 初回描画のために、正規化された座標の変換処理を1回だけ行う
-        player.update(config.player_config.init_pos, config.window_config.window_size);
-
-        chasers.reserve(config.chasers_config.chaserCount);
-        for (auto& chaser_config : config.chasers_config.chasers)
-        {
-            chasers.emplace_back(chaser_config);
-        }
-    }
-
-    SocketHandler socket_handler;
-    GraphicsEngine graphics_engine;
-    Player player;
-    std::vector<Chaser> chasers;
-
-private:
-};
 
 int main()
 {
