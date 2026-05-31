@@ -141,18 +141,12 @@ python src/python/hand_tracking.py
 
 ## Current Challenges & Future Improvements
 - 進行中
-    - mainコードからfunction, class, structのファイル分け
-        - [x] Python
-        - [ ] C++
-    - 例外処理
-        - [x] Python
-        - [ ] C++
-- 予定
     - 敵の動き追加
         - [x] 単純追跡
         - [x] オイラー法
         - [ ] ランダム動き
         - [ ] 未定
+- 予定
     - python mediapipeのrunning_modeをLIVE_STREAMに変更
         - call backを用いてデータ送信をmain loopから外せる
     - hand_tracking.pyとmain.cppを同時に実行するファイル作成

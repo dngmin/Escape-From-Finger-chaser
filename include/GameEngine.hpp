@@ -10,10 +10,22 @@ class GameEngine
 public:
     GameEngine(const GameConfig& game_config);
 
+    bool run();
+
+    void UpdatePlayerPosition();
+
+    void WindowEvent();
+
+    void Chasing();
+
+    void Render();
+
+    bool CollisionDetection();
+
+private:
     GameConfig config;
     SocketHandler socket_handler;
     GraphicsEngine graphics_engine;
     Player player;
     std::vector<Chaser> chasers;
-private:
 };
