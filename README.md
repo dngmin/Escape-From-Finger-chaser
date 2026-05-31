@@ -163,3 +163,4 @@ python src/python/hand_tracking.py
     - Program Flowをmermaidに変更
     - ビジュアルアップグレード(背景、プレイヤー、敵など)
     - C++ヘッダーファイルで前方宣言を使用検討
+    - ゲームオーバーエフェクト

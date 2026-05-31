@@ -1,8 +1,8 @@
 #include "Chaser.hpp"
 
-Chaser::Chaser(const sf::Vector2f& init_pos, float rad, const sf::Color& color)
-    : state(init_pos)
-    , entity(init_pos, rad, color)
+Chaser::Chaser(const GameConfig::EntityConfig& entity_config)
+    : state(entity_config.init_pos)
+    , entity(entity_config)
 {}
 
 // 座標を0 ~ 1の値でもらうためWindowサイズで合わせる

@@ -1,12 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <Entity.hpp>
+#include "Entity.hpp"
+#include "GameConfig.hpp"
 #include <vector>
 
 class GraphicsEngine
 {
 public:
-    GraphicsEngine(const char* title, const sf::Vector2u& init_size, const sf::Color color);
+    GraphicsEngine(const GameConfig::WindowConfig& window_config);
+    // GraphicsEngine(const char* title, const sf::Vector2u& init_size, const sf::Color color);
 
     // ユーザーからのwindow終了、リサイズ情報を更新
     void UpdateWindowEvent();

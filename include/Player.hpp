@@ -1,11 +1,12 @@
 #pragma once
 #include "PlayerState.hpp"
 #include "Entity.hpp"
+#include "GameConfig.hpp"
 
 class Player
 {
 public:
-    Player(const sf::Vector2f& init_pos, float rad, const sf::Color& color);
+    Player(const GameConfig::EntityConfig& entity_config);
 
     void update(const sf::Vector2f& received_pos, const sf::Vector2u& window_size);
 

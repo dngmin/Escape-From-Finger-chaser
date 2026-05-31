@@ -29,24 +29,23 @@ int main()
 {
     try
     {
+        // ゲーム設定
+        GameConfig game_config;
+
         // Udp Socket 初期化
         SocketHandler socket_handler;
-        
+
         // SFML 初期化
-        // タイトル、サイズ、背景色
-        GraphicsEngine graphics_engine("game", {800, 600}, sf::Color::Black);
+        GraphicsEngine graphics_engine(game_config.window_config);
 
         // オブジェクト初期化
-        // 初期位置、Entityサイズ、色
         static constexpr float playerSize = 10.f, chaserSize = 10.f;
-        Player player({0.5f, 0.5f}, playerSize, {255, 255, 255});
+        Player player(game_config.player_config);
 
-        // std::vector<sf::Vector2f> chasers_init_pos = {{0.1, 0.1}, {0.9, 0.1}, {0.1, 0.9}, {0.9, 0.9}};
-        // std::vector<sf::Color> chasers_color = {{255, 0, 0}, {0, 255, 0}, {0, 255, 255}, {255, 255, 0}};
-        Chaser chaser1({0.1, 0.1}, chaserSize, {255, 0, 0});
-        Chaser chaser2({0.9, 0.1}, chaserSize, {255, 0, 0});
-        Chaser chaser3({0.1, 0.9}, chaserSize, {0, 255, 0});
-        Chaser chaser4({0.9, 0.9}, chaserSize, {0, 255, 0});
+        Chaser chaser1(game_config.chaser1_config);
+        Chaser chaser2(game_config.chaser2_config);
+        Chaser chaser3(game_config.chaser3_config);
+        Chaser chaser4(game_config.chaser4_config);
 
 
 

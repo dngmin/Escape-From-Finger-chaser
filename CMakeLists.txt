@@ -27,6 +27,7 @@ add_executable(${PROJECT_NAME}
     include/ConfigLoader.hpp
     include/SocketHandler.hpp
     include/Entity.hpp
+    include/GameConfig.hpp
     include/Utils.hpp
 )
 

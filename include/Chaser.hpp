@@ -1,11 +1,12 @@
 #pragma once
 #include "ChaserState.hpp"
 #include "Entity.hpp"
+#include "GameConfig.hpp"
 
 class Chaser
 {
 public:
-    Chaser(const sf::Vector2f& init_pos, float rad, const sf::Color& color);
+    Chaser(const GameConfig::EntityConfig& entity_config);
 
     void update(sf::Vector2f target_pos, sf::Vector2u window_size);
 
