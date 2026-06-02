@@ -2,10 +2,10 @@
 MediaPipeによるAI手の認識（Python）と、高頻度な物理計算・描画（C++）をUDPソケット通信で同期させた、リアルタイム・チェイスゲームプロジェクトです。<br>
 現在はビジュアルよりも、**「入力ジッターの補正」** や **「異言語間マルチプロセス通信」**といった**ゲームのコアシステム・アーキテクチャの構築**にこだわり抜いて開発しています。
 
-## Demo
+## 📽️ Demo
 ![demo](./assets/demo.gif)
 
-## 技術スタック
+## 🛠️ 技術スタック
 ### 開発環境
 - **OS**
     - macOS
@@ -22,7 +22,7 @@ MediaPipeによるAI手の認識（Python）と、高頻度な物理計算・描
 - **C++**
     - `SFML` (Simple and Fast Multimedia Library) : グラフィックUI及びSocket通信
 
-## 特徴
+## 💫 特徴
 ### 1. リアルタイム・トラックング精度の追求
 - **適応型ノイズ除去**: 1€ Filterを用いて、カメラの解像度や光源に依存しない**揺れのない**滑らかなレンダリングを実現しました。
 - **物理シミュレーション**: 敵キャラクターの挙動に、単純追跡だけでなく、オイラー法を用いた予測アルゴリズムを導入することで、プレイヤーの動きに対する**追いつかれそうな緊張感**を演出しています。
@@ -34,7 +34,7 @@ MediaPipeによるAI手の認識（Python）と、高頻度な物理計算・描
 ### 3. UXの最適化
 - **解像度可変対応**: ウィンドウのリサイズに応じて座標変換行列を再計算し、常に正しいアスペクト比でトラッキングデータを反映させる設計にしました。
 
-## Why This Technology?
+## 💡 Why This Technology?
 このプロジェクトは、認識精度の追求とリアルタイムな操作感の両立を目指し、以下のような技術選定を行いました。
 
 - **Python & C++ のハイブリッド構成**
@@ -45,8 +45,8 @@ MediaPipeによるAI手の認識（Python）と、高頻度な物理計算・描
 - **1€ Filterの自作実装**
     - 固定係数フィルタリングでは、手の動きが速い時の**遅延**と、止まっている時の**ジッター(揺れ)**を同時に解消できません。速度に応じてフィルタ強度が動的に変化する1€ Filterを実装することで、滑らかな操作体験を実現しました。
 
-## Architecture & Program Flow
-### Architecture
+## 🏗️🔄 Architecture & Program Flow
+### 🏗️ Architecture
 - Input : Mediapipeで検出した生の座標データ(`received_pos`)が入ります。x, y座標をfloat形式にパッキングしUDP通信でC++ロジック側に渡します。
 - Processing
     - 渡されたデータの時間間隔(`dT`)を測るタイマー、速度を計算する数式、速度から精密にノイズを削る1€ フィルター(One Euro Filter)が結合されています。
@@ -55,7 +55,7 @@ MediaPipeによるAI手の認識（Python）と、高頻度な物理計算・描
     - プレイヤーやChaserの位置座標に基づき描画。
     - 補正された現在座標(`get_curr_pos`)とnステップ後の位置座標(`get_Euler_predict`)にChaserが向かい、Chaserの位置を更新
 
-### Program Flow
+### 🔄 Program Flow
 0. .envから環境変数取得
 - ここからはループ
 1. Mediapipeから人差し指先の座標を取得
@@ -71,7 +71,7 @@ MediaPipeによるAI手の認識（Python）と、高頻度な物理計算・描
 
 > [プログラムの流れをフローチャートで見る](assets/flowchart.md)
 
-## インストール方法 & 使い方
+## 🧳 インストール方法 & 使い方
 - ⚠️MacOS開発環境であるため、他のOSについてはTest未実施
     - 以下もMacOSを基準に説明しています。
  - **Python3.10以上**
@@ -142,7 +142,7 @@ python src/python/hand_tracking.py
 ./build/effc
 ```
 
-## Current Challenges & Future Improvements
+## 🏁 Current Challenges & Future Improvements
 - 進行中
     - 敵の動き追加
         - [x] 単純追跡
