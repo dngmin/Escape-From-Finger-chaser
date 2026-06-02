@@ -19,6 +19,8 @@ public:
 
     sf::Vector2f get_prev_pos() const {return prev_pos;}
 
+    sf::Vector2f get_curr_vel() const {return curr_vel;}
+
     float get_dT() const {return dT;}
 
 private:

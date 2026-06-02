@@ -23,6 +23,11 @@ sf::Vector2f Player::getprevPosition() const
     return state.get_prev_pos();
 }
 
+sf::Vector2f Player::getVelocity() const
+{
+    return state.get_curr_vel();
+}
+
 float Player::getdT() const
 {
     return state.get_dT();

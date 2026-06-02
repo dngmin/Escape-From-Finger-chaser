@@ -14,6 +14,8 @@ public:
 
     sf::Vector2f getprevPosition() const;
 
+    sf::Vector2f getVelocity() const;
+
     float getdT() const;
 
     const Entity getEntity() const {return entity;}

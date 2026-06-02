@@ -50,8 +50,9 @@ void GameEngine::Chasing()
 {
     sf::Vector2f player_curr_pos = player.getPosition();
     sf::Vector2f player_prev_pos = player.getprevPosition();
+    sf::Vector2f player_curr_vel = player.getVelocity();
     float dT = player.getdT();
-    sf::Vector2f player_Eulerpredict_pos = predictEulerPosition(player_curr_pos, player_prev_pos, dT, chaser_speed);
+    sf::Vector2f player_Eulerpredict_pos = predictEulerPosition(player_curr_pos, player_curr_vel, dT, prediction_steps);
 
     // Chaser1,2：単純追跡
     // Chaser3,4：オイラー法を用いた予測追跡
