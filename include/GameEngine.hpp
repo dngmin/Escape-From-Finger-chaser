@@ -28,4 +28,6 @@ private:
     GraphicsEngine graphics_engine;
     Player player;
     std::vector<Chaser> chasers;
+    int prediction_steps;
+    float chaser_speed;
 };

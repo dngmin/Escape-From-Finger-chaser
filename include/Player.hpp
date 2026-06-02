@@ -12,7 +12,9 @@ public:
 
     sf::Vector2f getPosition() const;
 
-    sf::Vector2f getEulerPredict() const;
+    sf::Vector2f getprevPosition() const;
+
+    float getdT() const;
 
     const Entity getEntity() const {return entity;}
 private:

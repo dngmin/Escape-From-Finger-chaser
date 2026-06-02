@@ -26,6 +26,7 @@ add_executable(${PROJECT_NAME}
     include/Chaser.hpp
     include/PlayerState.hpp
     include/ChaserState.hpp
+    include/ChasingAlgorithm.hpp
     include/ConfigLoader.hpp
     include/SocketHandler.hpp
     include/Entity.hpp

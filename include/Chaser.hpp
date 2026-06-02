@@ -8,7 +8,7 @@ class Chaser
 public:
     Chaser(const GameConfig::EntityConfig& entity_config);
 
-    void update(sf::Vector2f target_pos, sf::Vector2u window_size);
+    void update(const sf::Vector2f& target_pos, const sf::Vector2u& window_size, const float speed);
 
     sf::Vector2f getPosition() const;
 

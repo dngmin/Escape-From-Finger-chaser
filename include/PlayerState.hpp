@@ -17,14 +17,9 @@ public:
     // Playerの現在位置を取得
     sf::Vector2f get_curr_pos() const {return curr_pos;}
 
-    // Euler法を用いたPlayerの予測位置取得
-    sf::Vector2f get_Euler_predict() const
-    {
-        return {
-            curr_pos.x + curr_vel.x * (prediction_steps * dT),
-            curr_pos.y + curr_vel.y * (prediction_steps * dT)
-        };
-    }
+    sf::Vector2f get_prev_pos() const {return prev_pos;}
+
+    float get_dT() const {return dT;}
 
 private:
     // Playerのデータ
@@ -38,9 +33,6 @@ private:
     float dT;
     // dTが 0になることを防ぐためのガード
     static constexpr float MIN_dT = 1e-6f;
-
-    // 予測ステップ数
-    static constexpr int prediction_steps = 5;
 
     // 1€ filter 初期値。tuningの際には以下を調整
 

@@ -24,6 +24,8 @@ struct GameConfig
     {
         size_t chaserCount = 0;
         std::vector<EntityConfig> chasers;
+        int prediction_steps = 5;
+        float speed = 5e-5;
     };
 
     WindowConfig window_config;

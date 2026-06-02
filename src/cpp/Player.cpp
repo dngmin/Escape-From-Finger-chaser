@@ -18,7 +18,12 @@ sf::Vector2f Player::getPosition() const
     return state.get_curr_pos();
 }
 
-sf::Vector2f Player::getEulerPredict() const
+sf::Vector2f Player::getprevPosition() const
 {
-    return state.get_Euler_predict();
+    return state.get_prev_pos();
+}
+
+float Player::getdT() const
+{
+    return state.get_dT();
 }

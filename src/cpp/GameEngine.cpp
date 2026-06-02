@@ -1,10 +1,13 @@
 #include "GameEngine.hpp"
 #include "Utils.hpp"
+#include "ChasingAlgorithm.hpp"
 
 GameEngine::GameEngine(const GameConfig& game_config)
     : config(game_config)
     , graphics_engine(game_config.window_config)
     , player(game_config.player_config)
+    , prediction_steps(game_config.chasers_config.prediction_steps)
+    , chaser_speed(game_config.chasers_config.speed)
     {
         // 初回描画のために、正規化された座標の変換処理を1回だけ行う
         player.update(config.player_config.init_pos, config.window_config.window_size);
@@ -45,13 +48,18 @@ void GameEngine::WindowEvent()
 
 void GameEngine::Chasing()
 {
+    sf::Vector2f player_curr_pos = player.getPosition();
+    sf::Vector2f player_prev_pos = player.getprevPosition();
+    float dT = player.getdT();
+    sf::Vector2f player_Eulerpredict_pos = predictEulerPosition(player_curr_pos, player_prev_pos, dT, chaser_speed);
+
     // Chaser1,2：単純追跡
     // Chaser3,4：オイラー法を用いた予測追跡
     // 今後二つのアルゴリズムを追加し、4種の追跡アルゴリズム適用予定
     for (int i = 0; i < config.chasers_config.chaserCount; i++)
     {
-        if (i < 2) chasers[i].update(player.getPosition(), graphics_engine.window_size);
-        else chasers[i].update(player.getEulerPredict(), graphics_engine.window_size);
+        if (i < 2) chasers[i].update(player_curr_pos, graphics_engine.window_size, chaser_speed);
+        else chasers[i].update(player_Eulerpredict_pos, graphics_engine.window_size, chaser_speed);
     }
 }
 
