@@ -30,4 +30,5 @@ private:
     std::vector<Chaser> chasers;
     int prediction_steps;
     float chaser_speed;
+    float distanceThreshold = 1.f;
 };

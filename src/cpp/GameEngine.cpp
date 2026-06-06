@@ -60,7 +60,13 @@ void GameEngine::Chasing()
     chasers[0].update(player_curr_pos, graphics_engine.window_size, chaser_speed);
     chasers[1].update(player_Eulerpredict_pos, graphics_engine.window_size, chaser_speed);
     chasers[2].update(player_Eulerpredict_pos, graphics_engine.window_size, chaser_speed);
-    sf::Vector2f random_pos = getRandomPosition(player_curr_pos, chasers[3].getPosition());
+    
+    static sf::Vector2f random_pos = getRandomPosition(player_curr_pos, chasers[3].getPosition());
+    float distance_to_target = getDistance(chasers[3].getPosition(), random_pos, graphics_engine.window_size);
+    if (distance_to_target < distanceThreshold)
+    {
+        random_pos = getRandomPosition(player_curr_pos, chasers[3].getPosition());
+    }
     chasers[3].update(random_pos, graphics_engine.window_size, chaser_speed);
 }
 
