@@ -27,6 +27,8 @@ MediaPipeによるAI手の認識（Python）と、高頻度な物理計算・描
 - **適応型ノイズ除去**: 1€ Filterを用いて、カメラの解像度や光源に依存しない**揺れのない**滑らかなレンダリングを実現しました。
 - **物理シミュレーション**: 敵キャラクターの挙動に、オイラー法を用いた「予測アルゴリズム」を導入。さらに、動的座標系を用いた「相対的な乱数アルゴリズム」を組み合わせることで、プレイヤーの動きに対して**追いつかれそうな緊張感**を演出しています。
 
+※各アルゴリズムの数式や詳細なロジックは [こちら（追跡アルゴリズム詳細）](./assets/chasing_algorithm.md) をご参照ください。
+
 ### 2. システム設計
 - **ハイブリッド・アーキテクチャ**: 画像認識プロセス（Python）とロジック・レンダリング(C++)をUDPで分離し、開発効率を求めました。
 - **データ駆動型設計:** 接続情報やパス設定を`.env`ファイルで外部化し、コードを修正することなく環境変数を変更できる柔軟性を確保しています。
@@ -51,9 +53,10 @@ MediaPipeによるAI手の認識（Python）と、高頻度な物理計算・描
 - Processing
     - 渡されたデータの時間間隔(`dT`)を測るタイマー、速度を計算する数式、速度から精密にノイズを削る1€ フィルター(One Euro Filter)が結合されています。
     - 補正された現在座標に基づき、オイラー法(Euler method)を用いてnステップ後の位置を予測します。
+    - 敵キャラクターの現在位置を基準（原点）とした動的座標系を定義し、プレイヤーが存在する象限エリアに限定した乱数座標を生成します。
 - Output
     - プレイヤーやChaserの位置座標に基づき描画。
-    - 補正された現在座標(`get_curr_pos`)とnステップ後の位置座標(`get_Euler_predict`)にChaserが向かい、Chaserの位置を更新
+    - 補正された現在座標（`player_curr_pos`）、$n$ ステップ後の予測座標（`player_Eulerpredict_pos`）、および生成された乱数座標（`random_pos`）の3つをターゲットとしてChaserの位置を更新します。
 
 ### 🔄 Program Flow
 0. .envから環境変数取得
@@ -69,7 +72,7 @@ MediaPipeによるAI手の認識（Python）と、高頻度な物理計算・描
 - 繰り返し
 9. 終了
 
-> [プログラムの流れをフローチャートで見る](assets/flowchart.md)
+> [プログラムの流れをフローチャートで見る](./assets/flowchart.md)
 
 ## 🧳 インストール方法 & 使い方
 - ⚠️MacOS開発環境であるため、他のOSについてはTest未実施
@@ -78,7 +81,7 @@ MediaPipeによるAI手の認識（Python）と、高頻度な物理計算・描
  - **C++20以上**
 
 ### 0. ダウンロード (Download)
-- ダウンロード方法は以下の二つです。
+- ダウンロード方法は以下の2つです。
 #### **Method A: Git Clone（おすすめ）**
 ```bash
 git clone https://github.com/dngmin/Escape-From-Finger-chaser.git
@@ -88,7 +91,7 @@ git clone https://github.com/dngmin/Escape-From-Finger-chaser.git
 #### Method B: ZIPファイルダウンロード
 1. [Github レポジトリ](https://github.com/dngmin/Escape-From-Finger-chaser)右上の緑[<> Code]ボタンをクリックしてください。
 2. [Download ZIP]を選択し、圧縮ファイルをダウンロードしてください。
-3.解凍の後、フォルダへ移動してください。
+3.解凍の後、プロジェクトフォルダへ移動してください。
 #### **⚠️ A, Bどちらの方法でも、Clone・解凍後はフォルダへの移動が必要です**
 ```bash
 cd Path/Escape-From-Finger-chaser # e.g. cd desktop/user/Escape-From-Finger-chaser
