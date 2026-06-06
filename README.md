@@ -18,14 +18,14 @@ MediaPipeによるAI手の認識（Python）と、高頻度な物理計算・描
 ### ライブラリ & フレームワーク
 - **Python**
     - `mediapipe` (0.10.35) : AIを用いたLIVE Hand Landmark Detection
-    - `opencv-python` (4.13.0.92) : カメラ映像入及びイメージ処理
+    - `opencv-python` (4.13.0.92) : カメラ映像入力および画像処理
 - **C++**
-    - `SFML` (Simple and Fast Multimedia Library) : グラフィックUI及びSocket通信
+    - `SFML` (Simple and Fast Multimedia Library) : グラフィックおよびソケット通信
 
 ## 💫 特徴
-### 1. リアルタイム・トラックング精度の追求
+### 1. リアルタイム・トラッキング精度の追求
 - **適応型ノイズ除去**: 1€ Filterを用いて、カメラの解像度や光源に依存しない**揺れのない**滑らかなレンダリングを実現しました。
-- **物理シミュレーション**: 敵キャラクターの挙動に、単純追跡だけでなく、オイラー法を用いた予測アルゴリズムを導入することで、プレイヤーの動きに対する**追いつかれそうな緊張感**を演出しています。
+- **物理シミュレーション**: 敵キャラクターの挙動に、オイラー法を用いた「予測アルゴリズム」を導入。さらに、動的座標系を用いた「相対的な乱数アルゴリズム」を組み合わせることで、プレイヤーの動きに対して**追いつかれそうな緊張感**を演出しています。
 
 ### 2. システム設計
 - **ハイブリッド・アーキテクチャ**: 画像認識プロセス（Python）とロジック・レンダリング(C++)をUDPで分離し、開発効率を求めました。
@@ -89,7 +89,7 @@ git clone https://github.com/dngmin/Escape-From-Finger-chaser.git
 1. [Github レポジトリ](https://github.com/dngmin/Escape-From-Finger-chaser)右上の緑[<> Code]ボタンをクリックしてください。
 2. [Download ZIP]を選択し、圧縮ファイルをダウンロードしてください。
 3.解凍の後、フォルダへ移動してください。
-#### **⚠️ A,Bどれもclone,解凍の後にはフォルダに移動が必要**
+#### **⚠️ A, Bどちらの方法でも、Clone・解凍後はフォルダへの移動が必要です**
 ```bash
 cd Path/Escape-From-Finger-chaser # e.g. cd desktop/user/Escape-From-Finger-chaser
 ```
@@ -147,7 +147,7 @@ python src/python/hand_tracking.py
     - 敵の動き追加
         - [x] 単純追跡
         - [x] オイラー法
-        - [ ] ランダム動き
+        - [x] ランダム動き
         - [ ] 未定
 - 予定（※ 優先度順ではありません）
     - python mediapipeのrunning_modeをLIVE_STREAMに変更
