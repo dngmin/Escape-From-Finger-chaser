@@ -23,13 +23,18 @@ bool GameEngine::run()
 {
     while (graphics_engine.window.isOpen())
     {
-        graphics_engine.UpdateWindowEvent();
+        WindowEvent();
         UpdatePlayerPosition();
         Chasing();
         Render();
         if (CollisionDetection()) return false;
     }
     return true;
+}
+
+void GameEngine::WindowEvent()
+{
+    graphics_engine.UpdateWindowEvent();
 }
 
 void GameEngine::UpdatePlayerPosition()
@@ -39,11 +44,6 @@ void GameEngine::UpdatePlayerPosition()
         sf::Vector2f received_pos = socket_handler.get_received_pos();
         player.update(received_pos, graphics_engine.window_size);
     }
-}
-
-void GameEngine::WindowEvent()
-{
-    graphics_engine.UpdateWindowEvent();
 }
 
 void GameEngine::Chasing()

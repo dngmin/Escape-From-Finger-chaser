@@ -12,9 +12,9 @@ public:
 
     bool run();
 
-    void UpdatePlayerPosition();
-
     void WindowEvent();
+    
+    void UpdatePlayerPosition();
 
     void Chasing();
 
