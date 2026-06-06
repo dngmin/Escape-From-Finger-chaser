@@ -1,34 +1,22 @@
 #include "Player.hpp"
 
 Player::Player(const GameConfig::EntityConfig& entity_config)
-    : state(entity_config.init_pos)
-    , entity(entity_config)
+    : entity(entity_config)
+    , filter(1.f, 0.01f, 1.f)
+    , T_prev(Clock::now())
 {}
 
 // 座標を0 ~ 1の値でもらうためWindowサイズで合わせる
 void Player::update(const sf::Vector2f& received_pos, const sf::Vector2u& window_size)
 {
-    state.update(received_pos);
-    sf::Vector2f curr_pos = state.get_curr_pos();
+    // 1€ filterの実装
+    TimePoint T = Clock::now();
+    dT = static_cast<float>(std::chrono::duration<double>(T - T_prev).count());
+    curr_pos = filter.Filter(received_pos, dT);
+    curr_vel = filter.getVelocity();
+
+    // // 次の計算のため値変換
+    T_prev = T;
+
     entity.entity.setPosition({curr_pos.x * window_size.x, curr_pos.y * window_size.y});
-}
-
-sf::Vector2f Player::getPosition() const
-{
-    return state.get_curr_pos();
-}
-
-sf::Vector2f Player::getprevPosition() const
-{
-    return state.get_prev_pos();
-}
-
-sf::Vector2f Player::getVelocity() const
-{
-    return state.get_curr_vel();
-}
-
-float Player::getdT() const
-{
-    return state.get_dT();
 }

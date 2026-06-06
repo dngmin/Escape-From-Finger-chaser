@@ -13,18 +13,17 @@ add_executable(${PROJECT_NAME}
     src/cpp/GraphicsEngine.cpp
     src/cpp/Player.cpp
     src/cpp/Chaser.cpp
-    src/cpp/PlayerState.cpp
     src/cpp/ChaserState.cpp
     src/cpp/ConfigLoader.cpp
     src/cpp/SocketHandler.cpp
     src/cpp/Entity.cpp
     src/cpp/Utils.cpp
+    src/cpp/OneEuroFilter.cpp
 
     include/GameEngine.hpp
     include/GraphicsEngine.hpp
     include/Player.hpp
     include/Chaser.hpp
-    include/PlayerState.hpp
     include/ChaserState.hpp
     include/ChasingAlgorithm.hpp
     include/ConfigLoader.hpp
@@ -32,6 +31,7 @@ add_executable(${PROJECT_NAME}
     include/Entity.hpp
     include/GameConfig.hpp
     include/Utils.hpp
+    include/OneEuroFilter.hpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
