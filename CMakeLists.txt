@@ -13,7 +13,6 @@ add_executable(${PROJECT_NAME}
     src/cpp/GraphicsEngine.cpp
     src/cpp/Player.cpp
     src/cpp/Chaser.cpp
-    src/cpp/ChaserState.cpp
     src/cpp/ChasingAlgorithm.cpp
     src/cpp/ConfigLoader.cpp
     src/cpp/SocketHandler.cpp
@@ -25,7 +24,6 @@ add_executable(${PROJECT_NAME}
     include/GraphicsEngine.hpp
     include/Player.hpp
     include/Chaser.hpp
-    include/ChaserState.hpp
     include/ChasingAlgorithm.hpp
     include/ConfigLoader.hpp
     include/SocketHandler.hpp

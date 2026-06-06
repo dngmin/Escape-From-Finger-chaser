@@ -1,5 +1,4 @@
 #pragma once
-#include "ChaserState.hpp"
 #include "Entity.hpp"
 #include "GameConfig.hpp"
 
@@ -10,10 +9,10 @@ public:
 
     void update(const sf::Vector2f& target_pos, const sf::Vector2u& window_size, const float speed);
 
-    sf::Vector2f getPosition() const;
+    sf::Vector2f getPosition() const {return position;}
 
     const Entity getEntity() const {return entity;}
 private:
-    ChaserState state;
     Entity entity;
+    sf::Vector2f position;
 };
