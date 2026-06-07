@@ -14,11 +14,13 @@ sf::Vector2f predictEulerPosition(const sf::Vector2f& curr_pos, const sf::Vector
 // 距離閾値に基づいた移動軸選択も同時に行う
 sf::Vector2f getAxisAlignedPosition(const sf::Vector2f& curr_pos, const sf::Vector2f& curr_vel, const sf::Vector2f& chaser_pos, float distanceThreshold, const sf::Vector2u window_size)
 {
+    // 速度基準軸選定
     sf::Vector2f target_pos;
     bool x_move = std::abs(curr_vel.x) > std::abs(curr_vel.y);
-    // 距離閾値超過確認
-    if (std::abs(curr_pos.y - chaser_pos.y) * window_size.x < distanceThreshold) x_move = true;
-    else if (std::abs(curr_pos.x - chaser_pos.x) * window_size.y < distanceThreshold) x_move = false;
+    // 距離基準軸選定
+    // 一般的にwidthの方が長いため、両方満たした時はx軸を優先する
+    if (std::abs(curr_pos.y - chaser_pos.y) * window_size.y < distanceThreshold) x_move = true;
+    else if (std::abs(curr_pos.x - chaser_pos.x) * window_size.x < distanceThreshold) x_move = false;
     
     target_pos.x = x_move? curr_pos.x : chaser_pos.x;
     target_pos.y = x_move? chaser_pos.y : curr_pos.y;
