@@ -54,12 +54,14 @@ void GameEngine::Chasing()
     sf::Vector2f player_Eulerpredict_pos = predictEulerPosition(player_curr_pos, player_curr_vel, dT, prediction_steps);
 
     // Chaser1：単純追跡
-    // Chaser2,3：オイラー法を用いた予測追跡
+    // Chaser2：オイラー法を用いた予測追跡
+    // Chaesr4: 軸移動追跡
     // Chaser4：ランダム座標に向けた追跡
-    // 後もう一つのアルゴリズムを追加し、4種の追跡アルゴリズム適用予定
     chasers[0].update(player_curr_pos, graphics_engine.window_size, chaser_speed);
     chasers[1].update(player_Eulerpredict_pos, graphics_engine.window_size, chaser_speed);
-    chasers[2].update(player_Eulerpredict_pos, graphics_engine.window_size, chaser_speed);
+
+    sf::Vector2f AxisAligned_pos = getAxisAlignedPosition(player_curr_pos, player_curr_vel, chasers[2].getPosition(), distanceThreshold, graphics_engine.window_size);
+    chasers[2].update(AxisAligned_pos, graphics_engine.window_size, chaser_speed);
     
     static sf::Vector2f random_pos = getRandomPosition(player_curr_pos, chasers[3].getPosition());
     float distance_to_target = getDistance(chasers[3].getPosition(), random_pos, graphics_engine.window_size);

@@ -42,7 +42,7 @@ struct GameConfig
     };
     EntityConfig chaser3_config = {
         .init_pos = {0.1f, 0.9f},
-        .color = sf::Color::Green
+        .color = sf::Color::Yellow
     };
     EntityConfig chaser4_config = {
         .init_pos = {0.9f, 0.9f},
