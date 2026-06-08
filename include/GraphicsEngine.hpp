@@ -1,19 +1,18 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Entity.hpp"
-#include "GameConfig.hpp"
+#include "SimulationConfig.hpp"
 #include <vector>
 
 class GraphicsEngine
 {
 public:
-    GraphicsEngine(const GameConfig::WindowConfig& window_config);
-    // GraphicsEngine(const char* title, const sf::Vector2u& init_size, const sf::Color color);
+    GraphicsEngine(const SimulationConfig::WindowConfig& window_config);
 
     // ユーザーからのwindow終了、リサイズ情報を更新
     void UpdateWindowEvent();
 
-    void Render(const Entity& player, const std::vector<Entity>& chasers);
+    void Render(const Entity& player, const std::vector<Entity>& chasing_objects);
 
     sf::RenderWindow window;
     const char* window_title;

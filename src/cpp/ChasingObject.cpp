@@ -1,13 +1,13 @@
-#include "Chaser.hpp"
+#include "ChasingObject.hpp"
 #include "Utils.hpp"
 
-Chaser::Chaser(const GameConfig::EntityConfig& entity_config)
+ChasingObject::ChasingObject(const SimulationConfig::EntityConfig& entity_config)
     : entity(entity_config)
     , position(entity_config.init_pos)
 {}
 
 // 座標を0 ~ 1の値でもらうためWindowサイズで合わせる
-void Chaser::update(const sf::Vector2f& target_pos, const sf::Vector2u& window_size, const float speed)
+void ChasingObject::update(const sf::Vector2f& target_pos, const sf::Vector2u& window_size, const float speed)
 {
     float distance = getDistance(target_pos, position);
     position.x += (target_pos.x - position.x) / distance * speed;

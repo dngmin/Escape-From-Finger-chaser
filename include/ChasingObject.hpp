@@ -1,11 +1,11 @@
 #pragma once
 #include "Entity.hpp"
-#include "GameConfig.hpp"
+#include "SimulationConfig.hpp"
 
-class Chaser
+class ChasingObject
 {
 public:
-    Chaser(const GameConfig::EntityConfig& entity_config);
+    ChasingObject(const SimulationConfig::EntityConfig& entity_config);
 
     void update(const sf::Vector2f& target_pos, const sf::Vector2u& window_size, const float speed);
 

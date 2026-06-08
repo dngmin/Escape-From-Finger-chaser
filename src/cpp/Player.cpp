@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player(const GameConfig::EntityConfig& entity_config)
+Player::Player(const SimulationConfig::EntityConfig& entity_config)
     : entity(entity_config)
     , filter(1.f, 0.01f, 1.f)
     , T_prev(Clock::now())

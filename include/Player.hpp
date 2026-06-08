@@ -1,6 +1,6 @@
 #pragma once
 #include "Entity.hpp"
-#include "GameConfig.hpp"
+#include "SimulationConfig.hpp"
 #include "OneEuroFilter.hpp"
 #include <chrono>
 
@@ -11,7 +11,7 @@ class Player
     using TimePoint = std::chrono::time_point<Clock>;
 
 public:
-    Player(const GameConfig::EntityConfig& entity_config);
+    Player(const SimulationConfig::EntityConfig& entity_config);
 
     // 1€ filterを用いたPlayerのデータアップデート
     void update(const sf::Vector2f& received_pos, const sf::Vector2u& window_size);

@@ -1,6 +1,6 @@
 #include "GraphicsEngine.hpp"
 
-GraphicsEngine::GraphicsEngine(const GameConfig::WindowConfig& window_config)
+GraphicsEngine::GraphicsEngine(const SimulationConfig::WindowConfig& window_config)
     : window(sf::VideoMode(window_config.window_size), window_config.title)
     , window_title(window_config.title)
     , window_size(window_config.window_size)
@@ -23,10 +23,10 @@ void GraphicsEngine::UpdateWindowEvent()
     }
 }
 
-void GraphicsEngine::Render(const Entity& player, const std::vector<Entity>& chasers)
+void GraphicsEngine::Render(const Entity& player, const std::vector<Entity>& chasing_objects)
 {
     window.clear(background_color);
     window.draw(player.entity);
-    for (auto& chaser : chasers) window.draw(chaser.entity);
+    for (auto& chasing_object : chasing_objects) window.draw(chasing_object.entity);
     window.display();
 }

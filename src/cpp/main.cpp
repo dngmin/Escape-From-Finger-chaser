@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "GameEngine.hpp"
+#include "SimulationEngine.hpp"
 
 void red_message(std::string msg)
 {
@@ -12,10 +12,10 @@ int main()
     try
     {
         // ゲーム設定
-        GameConfig game_config;
-        GameEngine game_engine(game_config);
+        SimulationConfig simulation_config;
+        SimulationEngine simulation_engine(simulation_config);
 
-        if (!game_engine.run()) return 0;
+        if (!simulation_engine.run()) return 0;
     }
     catch (const ConfigError& e)
     {

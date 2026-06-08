@@ -9,10 +9,10 @@ find_package(SFML 3 REQUIRED COMPONENTS Graphics Network)
 
 add_executable(${PROJECT_NAME}
     src/cpp/main.cpp
-    src/cpp/GameEngine.cpp
+    src/cpp/SimulationEngine.cpp
     src/cpp/GraphicsEngine.cpp
     src/cpp/Player.cpp
-    src/cpp/Chaser.cpp
+    src/cpp/ChasingObject.cpp
     src/cpp/ChasingAlgorithm.cpp
     src/cpp/ConfigLoader.cpp
     src/cpp/SocketHandler.cpp
@@ -20,15 +20,15 @@ add_executable(${PROJECT_NAME}
     src/cpp/Utils.cpp
     src/cpp/OneEuroFilter.cpp
 
-    include/GameEngine.hpp
+    include/SimulationEngine.hpp
     include/GraphicsEngine.hpp
     include/Player.hpp
-    include/Chaser.hpp
+    include/ChasingObject.hpp
     include/ChasingAlgorithm.hpp
     include/ConfigLoader.hpp
     include/SocketHandler.hpp
     include/Entity.hpp
-    include/GameConfig.hpp
+    include/SimulationConfig.hpp
     include/Utils.hpp
     include/OneEuroFilter.hpp
 )

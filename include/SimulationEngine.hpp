@@ -1,14 +1,14 @@
 #pragma once
-#include "GameConfig.hpp"
+#include "SimulationConfig.hpp"
 #include "SocketHandler.hpp"
 #include "GraphicsEngine.hpp"
 #include "Player.hpp"
-#include "Chaser.hpp"
+#include "ChasingObject.hpp"
 
-class GameEngine
+class SimulationEngine
 {
 public:
-    GameEngine(const GameConfig& game_config);
+    SimulationEngine(const SimulationConfig& game_config);
 
     bool run();
 
@@ -23,12 +23,12 @@ public:
     bool CollisionDetection();
 
 private:
-    GameConfig config;
+    SimulationConfig config;
     SocketHandler socket_handler;
     GraphicsEngine graphics_engine;
     Player player;
-    std::vector<Chaser> chasers;
+    std::vector<ChasingObject> chasing_objects;
     int prediction_steps;
-    float chaser_speed;
+    float chasing_object_speed;
     float distanceThreshold = 1.f;
 };

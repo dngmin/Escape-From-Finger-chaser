@@ -1,11 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "GameConfig.hpp"
+#include "SimulationConfig.hpp"
 
 class Entity
 {
 public:
-    Entity(const GameConfig::EntityConfig entity_config);
+    Entity(const SimulationConfig::EntityConfig entity_config);
     sf::CircleShape entity;
     sf::Vector2f position;
 private:
