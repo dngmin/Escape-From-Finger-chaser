@@ -1,7 +1,7 @@
 ```mermaid
 flowchart TD
     Start[Start]
-    GameOver[終了]
+    GameOver[プロセス終了]
 
     subgraph Python [Pythonプロセス：画像認識]
 
@@ -15,10 +15,10 @@ flowchart TD
     subgraph C++ [C++プロセス：メインループ]
     C1[UDPソケット受信]
         subgraph cs[SFML描画・ロジック]
-        C2["1€ Filter補正\n[Player]"]
-        C3[Player位置予測]
-        C4["位置更新\n[Player / Enemy]"]
-        C5[ゲームオーバー判定\n]
+        C2["1€ Filter補正"]
+        C3[追従アルゴリズム計算]
+        C4["位置更新\n[各オブジェクト]"]
+        C5[終了トリガー判定]
         end
 
     end
