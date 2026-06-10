@@ -22,6 +22,8 @@ public:
 
     bool CollisionDetection();
 
+    void AwaitWindowClose();
+
 private:
     SimulationConfig config;
     SocketHandler socket_handler;

@@ -27,9 +27,9 @@ bool SimulationEngine::run()
         UpdatePlayerPosition();
         Chasing();
         Render();
-        if (CollisionDetection()) return false;
+        if (CollisionDetection()) AwaitWindowClose();
     }
-    return true;
+    return false;
 }
 
 void SimulationEngine::WindowEvent()
@@ -93,4 +93,13 @@ bool SimulationEngine::CollisionDetection()
         if (distance_player_to_chasing_object <= collision_threshold) return true;
     }
     return false;
+}
+
+void SimulationEngine::AwaitWindowClose()
+{
+    while (graphics_engine.window.isOpen())
+    {
+        WindowEvent();
+        Render();
+    }
 }
