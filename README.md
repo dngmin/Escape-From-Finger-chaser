@@ -1,4 +1,4 @@
-# **Escape From Finger Chaser**
+# **Finger Trace : Algorithm LAB**
 MediaPipeを用いたAIによる手の座標トラッキング（Python）と、C++による高頻度な物理計算およびレンダリングを、UDPソケット通信で同期させた、リアルタイム・システムです。
 
 現在は視覚的な演出よりも、**「入力ジッターの補正」** や **「複数言語間マルチプロセス通信」**といった**システムのコア・アーキテクチャの構築**に重点を置いて開発しています。
@@ -87,17 +87,17 @@ MediaPipeを用いたAIによる手の座標トラッキング（Python）と、
 - ダウンロード方法は以下の2つです。
 #### **Method A: Git Clone（おすすめ）**
 ```bash
-git clone https://github.com/dngmin/Escape-From-Finger-chaser.git
+git clone https://github.com/dngmin/FingerTrace-AlgorithmLAB.git
 ```
 - ダウンロード先を指定したい場合は以下を先に行なってください。
 
 #### Method B: ZIPファイルダウンロード
-1. [Github リポジトリ](https://github.com/dngmin/Escape-From-Finger-chaser)右上の緑[<> Code]ボタンをクリックしてください。
+1. [Github リポジトリ](https://github.com/dngmin/FingerTrace-AlgorithmLAB.git)右上の緑[<> Code]ボタンをクリックしてください。
 2. [Download ZIP]を選択し、圧縮ファイルをダウンロードしてください。
 3.解凍の後、プロジェクトフォルダへ移動してください。
 #### **⚠️ A, Bどちらの方法でも、Clone・解凍後はフォルダへの移動が必要です**
 ```bash
-cd Path/Escape-From-Finger-chaser # e.g. cd desktop/user/Escape-From-Finger-chaser
+cd Path/FingerTrace-AlgorithmLAB # e.g. cd desktop/user/FingerTrace-AlgorithmLAB
 ```
 
 ### 1. 環境変数設定(.env)
@@ -145,7 +145,7 @@ make
 python src/python/hand_tracking.py
 
 # ターミナル 2: C++ UI実行
-./build/effc
+./build/ftal
 ```
 
 ## 🏁 Current Challenges & Future Improvements
