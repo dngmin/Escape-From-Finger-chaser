@@ -3,6 +3,7 @@
 Player::Player(const SimulationConfig::EntityConfig& entity_config)
     : entity(entity_config)
     , filter(1.f, 0.01f, 1.f)
+    , curr_pos(entity_config.init_pos)
     , T_prev(Clock::now())
 {}
 

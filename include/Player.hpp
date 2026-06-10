@@ -28,7 +28,7 @@ private:
     OneEuroFilter filter;
     // Playerのデータ
     sf::Vector2f curr_pos; // 現在位置
-    sf::Vector2f curr_vel = {0.f, 0.f}; // 現在速度
+    sf::Vector2f curr_vel; // 現在速度
 
     // 基準とする時間(初回呼び出し時に初期化され、update関数より更新される)
     TimePoint T_prev;
