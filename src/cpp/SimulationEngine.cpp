@@ -106,5 +106,11 @@ void SimulationEngine::AwaitWindowClose()
     {
         WindowEvent();
         Render();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Q)) CloseSimulation();
     }
+}
+
+void SimulationEngine::CloseSimulation()
+{
+    graphics_engine.window.close();
 }

@@ -6,7 +6,7 @@ GraphicsEngine::GraphicsEngine(const SimulationConfig::WindowConfig& window_conf
     , window_size(window_config.window_size)
     , background_color(window_config.background_color)
     , font("../assets/NotoSansJP-Bold.ttf")
-    , closing_text(font,"press any key to exit")
+    , closing_text(font,"press 'Q' to exit")
 {
     // closing_textサイズ初期化
     ResizeClosingText();
@@ -25,11 +25,6 @@ void GraphicsEngine::UpdateWindowEvent(Stage stage)
             sf::View view(sf::FloatRect({0.f, 0.f}, sf::Vector2f(window_size)));
             window.setView(view);
             ResizeClosingText();
-        }
-
-        if (stage == Stage::CLOSISING)
-        {
-            if(event->is<sf::Event::KeyPressed>()) window.close();
         }
     }
 }

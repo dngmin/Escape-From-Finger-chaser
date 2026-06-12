@@ -12,6 +12,7 @@ public:
 
     bool run();
 
+private:
     void WindowEvent();
     
     void UpdatePlayerPosition();
@@ -24,7 +25,8 @@ public:
 
     void AwaitWindowClose();
 
-private:
+    void CloseSimulation();
+
     SimulationConfig config;
     SocketHandler socket_handler;
     GraphicsEngine graphics_engine;
