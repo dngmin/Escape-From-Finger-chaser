@@ -19,7 +19,7 @@ MediaPipeを用いたAIによる手の座標トラッキング（Python）と、
 
 ### ライブラリ & フレームワーク
 - **Python**
-    - `mediapipe` (0.10.35) : AIを用いたLIVE Hand Landmark Detection
+    - `MediaPipe` (0.10.35) : AIを用いたLIVE Hand Landmark Detection
     - `opencv-python` (4.13.0.92) : カメラ映像入力および画像処理
 - **C++**
     - `SFML` (Simple and Fast Multimedia Library) : グラフィックおよびソケット通信
@@ -42,7 +42,7 @@ MediaPipeを用いたAIによる手の座標トラッキング（Python）と、
 このプロジェクトは、認識精度の追求とリアルタイムな操作感の両立を目指し、以下のような技術選定を行いました。
 
 - **Python & C++ のハイブリッド構成**
-    - **Python (`Mediapipe`/`OpenCV`)**: AIモデルの推論や画像処理において、開発効率を優先しました。
+    - **Python (`MediaPipe`/`OpenCV`)**: AIモデルの推論や画像処理において、開発効率を優先しました。
     - **C++ `(SFML)`**: 画像処理以外の「物理計算」「制御ロジック」「高頻度レンダリング」において、Pythonでは回避できない速度低下を避けるため、実行性能に優れたC++を採用しました。
 - **UDPによる通信**
     - リアルタイムな操作感において **過去のデータより最新の座標**が最優先であるため、通信の信頼性よりも到達速度を優先するUDPソケット通信を採用しました。
@@ -51,7 +51,7 @@ MediaPipeを用いたAIによる手の座標トラッキング（Python）と、
 
 ## 🏗️🔄 Architecture & Program Flow
 ### 🏗️ Architecture
-- Input : Mediapipeで検出した生の座標データ(`received_pos`)が入ります。x, y座標をfloat形式にパッキングしUDP通信でC++ロジック側に渡します。
+- Input : MediaPipeで検出した生の座標データ(`received_pos`)が入ります。x, y座標をfloat形式にパッキングしUDP通信でC++ロジック側に渡します。
 - Processing
     - 渡されたデータの時間間隔(`dT`)を測るタイマー、速度を計算する数式、速度から精密にノイズを削る1€ Filter(One Euro Filter)が結合されています。
     - 補正された現在座標に基づき、オイラー法(Euler method)を用いてnステップ後の位置を予測します。
@@ -64,7 +64,7 @@ MediaPipeを用いたAIによる手の座標トラッキング（Python）と、
 ### 🔄 Program Flow
 0. .envから環境変数取得
 - ここからはループ
-1. Mediapipeから人差し指先の座標を取得
+1. MediaPipeから人差し指先の座標を取得
 2. float形式にパッキングしUDP送信
 3. ユーザーによるプログラム終了確認→終了
 4. UIウィンドウサイズ変化確認　→　視点変更
@@ -154,7 +154,7 @@ python src/python/hand_tracking.py
         - [ ]初期UI画面
         - [ ]終了エフェクト及び終了画面
 - 予定（※ 優先度順ではありません）
-    - python mediapipeのrunning_modeをLIVE_STREAMに変更
+    - python MediaPipeのrunning_modeをLIVE_STREAMに変更
         - call backを用いてデータ送信をmain loopから外せる
     - hand_tracking.pyとmain.cppを同時に実行するファイル作成
     - edgeでの異常の動き発生対策
@@ -164,3 +164,7 @@ python src/python/hand_tracking.py
     - C++ヘッダーファイルで前方宣言を使用検討
     - **1ファイルの修正による他ファイルへの影響が大きいと感じたため、依存関係を解消するリファクタリングの必要性を実感**
     - SimulationEngine内のChasing簡略化
+
+## 🎁 Acknowledgements
+- [MediaPipe HandLandmarker Model](https://developers.google.com/edge/mediapipe/solutions/vision/hand_landmarker) - Licensed under the [Apache License 2.0](https://github.com/google-ai-edge/mediapipe/blob/master/LICENSE)
+- [Noto Sans JP](https://fonts.google.com/noto/specimen/Noto+Sans+JP) - Licensed under the [SIL Open Font License](https://openfontlicense.org/open-font-license-official-text/)

@@ -34,7 +34,7 @@ bool SimulationEngine::run()
 
 void SimulationEngine::WindowEvent()
 {
-    graphics_engine.UpdateWindowEvent();
+    graphics_engine.UpdateWindowEvent(stage);
 }
 
 void SimulationEngine::UpdatePlayerPosition()
@@ -81,6 +81,7 @@ void SimulationEngine::Render()
         ,chasing_objects[1].getEntity()
         ,chasing_objects[2].getEntity()
         ,chasing_objects[3].getEntity()}
+        , stage
     );
 }
 
@@ -90,7 +91,11 @@ bool SimulationEngine::CollisionDetection()
     {
         float distance_player_to_chasing_object = getDistance(player.getPosition(), chasing_objects[i].getPosition(), graphics_engine.window_size);
         float collision_threshold = config.player_config.entity_size + config.chasing_objects_config.chasing_objects[i].entity_size;
-        if (distance_player_to_chasing_object <= collision_threshold) return true;
+        if (distance_player_to_chasing_object <= collision_threshold)
+        {
+            stage = Stage::CLOSISING;
+            return true;
+        }
     }
     return false;
 }

@@ -33,4 +33,6 @@ private:
     int prediction_steps;
     float chasing_object_speed;
     float distanceThreshold = 1.f;
+
+    Stage stage = Stage::SIMULTATING;
 };

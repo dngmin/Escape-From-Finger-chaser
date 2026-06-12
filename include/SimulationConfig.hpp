@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-// ゲーム開始に必要な全ての初期値を管理している
+// 本プログラム開始に必要な全ての初期値を管理している
 // 0~1の比率で正規化した座標系を使用するため初期位置も0~1の値にする
 struct SimulationConfig
 {
@@ -58,4 +58,10 @@ struct SimulationConfig
             ChasingObject4_config
         }
     };
+};
+
+enum class Stage
+{
+    SIMULTATING = 0,
+    CLOSISING = 1
 };

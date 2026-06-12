@@ -5,9 +5,14 @@ GraphicsEngine::GraphicsEngine(const SimulationConfig::WindowConfig& window_conf
     , window_title(window_config.title)
     , window_size(window_config.window_size)
     , background_color(window_config.background_color)
-{};
+    , font("../assets/NotoSansJP-Bold.ttf")
+    , closing_text(font,"press any key to exit")
+{
+    // closing_textサイズ初期化
+    ResizeClosingText();
+};
 
-void GraphicsEngine::UpdateWindowEvent()
+void GraphicsEngine::UpdateWindowEvent(Stage stage)
 {
     while (std::optional event = window.pollEvent())
     {
@@ -19,14 +24,29 @@ void GraphicsEngine::UpdateWindowEvent()
             window_size = window.getSize();
             sf::View view(sf::FloatRect({0.f, 0.f}, sf::Vector2f(window_size)));
             window.setView(view);
+            ResizeClosingText();
+        }
+
+        if (stage == Stage::CLOSISING)
+        {
+            if(event->is<sf::Event::KeyPressed>()) window.close();
         }
     }
 }
 
-void GraphicsEngine::Render(const Entity& player, const std::vector<Entity>& chasing_objects)
+void GraphicsEngine::Render(const Entity& player, const std::vector<Entity>& chasing_objects, Stage stage)
 {
     window.clear(background_color);
     window.draw(player.entity);
     for (auto& chasing_object : chasing_objects) window.draw(chasing_object.entity);
+
+    if (stage == Stage::CLOSISING) window.draw(closing_text);
+
     window.display();
+}
+
+void GraphicsEngine::ResizeClosingText(unsigned int divisor)
+{
+    unsigned int font_size = window_size.x / divisor;
+    closing_text.setCharacterSize(font_size);
 }
