@@ -6,13 +6,13 @@ GraphicsEngine::GraphicsEngine(const SimulationConfig::WindowConfig& window_conf
     , window_size(window_config.window_size)
     , background_color(window_config.background_color)
     , font("../assets/NotoSansJP-Bold.ttf")
-    , closing_text(font,"press 'Q' to exit")
+    , closing_text(font,"press 'Q' to exit / 'R' to restart")
 {
     // closing_textサイズ初期化
     ResizeClosingText();
 };
 
-void GraphicsEngine::UpdateWindowEvent(Stage stage)
+void GraphicsEngine::UpdateWindowEvent()
 {
     while (std::optional event = window.pollEvent())
     {
@@ -35,7 +35,7 @@ void GraphicsEngine::Render(const Entity& player, const std::vector<Entity>& cha
     window.draw(player.entity);
     for (auto& chasing_object : chasing_objects) window.draw(chasing_object.entity);
 
-    if (stage == Stage::CLOSISING) window.draw(closing_text);
+    if (stage == Stage::AWAIT_USER_INPUT) window.draw(closing_text);
 
     window.display();
 }

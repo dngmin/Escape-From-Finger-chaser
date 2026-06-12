@@ -152,7 +152,8 @@ python src/python/hand_tracking.py
 - 進行中
     - プログラム開始と同時にスタート、追跡オブジェクトに当たると即終了によるUX低下改善
         - [ ]初期UI画面
-        - [ ]終了エフェクト及び終了画面
+        - [x]終了エフェクト及び終了画面
+            - 最も基本的な機能は完備(リスタート、終了)
 - 予定（※ 優先度順ではありません）
     - python MediaPipeのrunning_modeをLIVE_STREAMに変更
         - call backを用いてデータ送信をmain loopから外せる

@@ -27,14 +27,17 @@ bool SimulationEngine::run()
         UpdatePlayerPosition();
         Chasing();
         Render();
-        if (CollisionDetection()) AwaitWindowClose();
+        if (CollisionDetection()) 
+        {
+            AwaitUserInput();
+        }
     }
     return false;
 }
 
 void SimulationEngine::WindowEvent()
 {
-    graphics_engine.UpdateWindowEvent(stage);
+    graphics_engine.UpdateWindowEvent();
 }
 
 void SimulationEngine::UpdatePlayerPosition()
@@ -93,24 +96,42 @@ bool SimulationEngine::CollisionDetection()
         float collision_threshold = config.player_config.entity_size + config.chasing_objects_config.chasing_objects[i].entity_size;
         if (distance_player_to_chasing_object <= collision_threshold)
         {
-            stage = Stage::CLOSISING;
+            stage = Stage::AWAIT_USER_INPUT;
             return true;
         }
     }
     return false;
 }
 
-void SimulationEngine::AwaitWindowClose()
+void SimulationEngine::AwaitUserInput()
 {
     while (graphics_engine.window.isOpen())
     {
         WindowEvent();
         Render();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Q)) CloseSimulation();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Q))
+        {
+            CloseSimulation();
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::R))
+        {
+            ResetToRestart();
+            break;
+        }
     }
 }
 
 void SimulationEngine::CloseSimulation()
 {
     graphics_engine.window.close();
+}
+
+void SimulationEngine::ResetToRestart()
+{
+    stage = Stage::SIMULATING;
+    int i = 0;
+    for (auto& chasing_object_config : config.chasing_objects_config.chasing_objects)
+        {
+            chasing_objects[i++].reset(chasing_object_config.init_pos);
+        }
 }

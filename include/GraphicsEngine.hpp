@@ -10,7 +10,7 @@ public:
     GraphicsEngine(const SimulationConfig::WindowConfig& window_config);
 
     // ユーザーからのwindow終了、リサイズ情報を更新
-    void UpdateWindowEvent(Stage stage);
+    void UpdateWindowEvent();
 
     void Render(const Entity& player, const std::vector<Entity>& chasing_objects, Stage stage);
 

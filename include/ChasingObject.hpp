@@ -12,6 +12,9 @@ public:
     sf::Vector2f getPosition() const {return position;}
 
     const Entity getEntity() const {return entity;}
+
+    void reset(sf::Vector2f& reset_pos);
+
 private:
     Entity entity;
     sf::Vector2f position;

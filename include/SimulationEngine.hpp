@@ -23,9 +23,11 @@ private:
 
     bool CollisionDetection();
 
-    void AwaitWindowClose();
+    void AwaitUserInput();
 
     void CloseSimulation();
+
+    void ResetToRestart();
 
     SimulationConfig config;
     SocketHandler socket_handler;
@@ -36,5 +38,5 @@ private:
     float chasing_object_speed;
     float distanceThreshold = 1.f;
 
-    Stage stage = Stage::SIMULTATING;
+    Stage stage = Stage::SIMULATING;
 };

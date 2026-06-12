@@ -14,3 +14,8 @@ void ChasingObject::update(const sf::Vector2f& target_pos, const sf::Vector2u& w
     position.y += (target_pos.y - position.y) / distance * speed;
     entity.entity.setPosition({position.x * window_size.x, position.y * window_size.y});
 }
+
+void ChasingObject::reset(sf::Vector2f& reset_pos)
+{
+    position = reset_pos;
+}
