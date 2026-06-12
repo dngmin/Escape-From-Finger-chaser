@@ -8,7 +8,7 @@
 class SimulationEngine
 {
 public:
-    SimulationEngine(const SimulationConfig& game_config);
+    SimulationEngine(const SimulationConfig& simulation_config);
 
     bool run();
 

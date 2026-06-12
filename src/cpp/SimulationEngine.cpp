@@ -2,12 +2,12 @@
 #include "Utils.hpp"
 #include "ChasingAlgorithm.hpp"
 
-SimulationEngine::SimulationEngine(const SimulationConfig& game_config)
-    : config(game_config)
-    , graphics_engine(game_config.window_config)
-    , player(game_config.player_config)
-    , prediction_steps(game_config.chasing_objects_config.prediction_steps)
-    , chasing_object_speed(game_config.chasing_objects_config.speed)
+SimulationEngine::SimulationEngine(const SimulationConfig& simulation_config)
+    : config(simulation_config)
+    , graphics_engine(simulation_config.window_config)
+    , player(simulation_config.player_config)
+    , prediction_steps(simulation_config.chasing_objects_config.prediction_steps)
+    , chasing_object_speed(simulation_config.chasing_objects_config.speed)
     {
         // 初回描画のために、正規化された座標の変換処理を1回だけ行う
         player.update(config.player_config.init_pos, config.window_config.window_size);
