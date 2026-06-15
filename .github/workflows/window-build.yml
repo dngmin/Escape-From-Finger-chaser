@@ -1,0 +1,23 @@
+name: Windows Build Check
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # vcpkgを用いたSFMLインストール（すでにインストール済みの場合は次へ進む）
+      - name: Install SFML
+        run: vcpkg install sfml:x64-windows
+
+      # CMake ビルド
+      - name: Configure CMake
+        run: >
+          cmake -B build -S . 
+          -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake 
+          -DCMAKE_BUILD_TYPE=Release
+        
+      - name: Build
+        run: cmake --build build --config Release
