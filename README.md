@@ -80,6 +80,7 @@ MediaPipeを用いたAIによる手の座標トラッキング（Python）と、
 ## 🧳 インストール方法 & 使い方
 - ⚠️MacOS開発環境であるため、他のOSについてはTest未実施
     - 以下もMacOSを基準に説明しています。
+    - ✅WindowsはGithubActionsよりビルドテストは行いましたが、❌実際駆動は未実施
  - **Python3.10以上**
  - **C++20以上**
 
@@ -120,8 +121,12 @@ pip install -r "requirements.txt"
 python -m pip install -r "requirements.txt"
 ```
 - C++
+- Macでは`brew`、Windowsでは`vcpkg`をお勧めします。
 ```bash
+# Mac
 brew install sfml
+# Windows
+vcpkg install sfml:x64-windows
 ```
 
 ### 3. CMake
@@ -133,7 +138,10 @@ mkdir build && cd build
 cmake ..
 
 # 3. コンパイルの実行
+# Mac
 make
+# Window
+cmake --build . --config Release
 ```
 
 ### 4. 実行
