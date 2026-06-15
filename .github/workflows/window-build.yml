@@ -1,6 +1,22 @@
 name: Windows Build Check
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'src/**'
+      - '**.cpp'
+      - '**.hpp'
+      - 'CMakeLists.txt'
+      - '.github/workflows/windows-build.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'src/**'
+      - '**.cpp'
+      - '**.hpp'
+      - 'CMakeLists.txt'
+      - '.github/workflows/windows-build.yml'
 
 jobs:
   build:
