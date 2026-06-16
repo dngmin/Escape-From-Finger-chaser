@@ -23,5 +23,6 @@ private:
     void ResizeClosingText(unsigned int divisor = 25);
 
     sf::Font font;
+    sf::Text mainmenu_text;
     sf::Text closing_text;
 };

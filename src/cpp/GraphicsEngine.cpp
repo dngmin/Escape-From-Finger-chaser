@@ -6,6 +6,7 @@ GraphicsEngine::GraphicsEngine(const SimulationConfig::WindowConfig& window_conf
     , window_size(window_config.window_size)
     , background_color(window_config.background_color)
     , font("../assets/NotoSansJP-Bold.ttf")
+    , mainmenu_text(font, "press 'space' to start / 'Q' to exit")
     , closing_text(font,"press 'Q' to exit / 'R' to restart")
 {
     // closing_textサイズ初期化
@@ -33,7 +34,12 @@ void GraphicsEngine::Render(const Entity& player, const std::vector<Entity>& cha
 {
     window.clear(background_color);
     window.draw(player.entity);
-    for (auto& chasing_object : chasing_objects) window.draw(chasing_object.entity);
+    
+    if (stage == Stage::MAINMENU) window.draw(mainmenu_text);
+    else // stage != Stage::MAINMENU
+    {
+        for (auto& chasing_object : chasing_objects) window.draw(chasing_object.entity);
+    }
 
     if (stage == Stage::AWAIT_USER_INPUT) window.draw(closing_text);
 
@@ -43,5 +49,6 @@ void GraphicsEngine::Render(const Entity& player, const std::vector<Entity>& cha
 void GraphicsEngine::ResizeClosingText(unsigned int divisor)
 {
     unsigned int font_size = window_size.x / divisor;
+    mainmenu_text.setCharacterSize(font_size);
     closing_text.setCharacterSize(font_size);
 }

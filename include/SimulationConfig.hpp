@@ -62,6 +62,7 @@ struct SimulationConfig
 
 enum class Stage
 {
-    SIMULATING = 0,
-    AWAIT_USER_INPUT = 1
+    MAINMENU = 0,
+    SIMULATING = 1,
+    AWAIT_USER_INPUT = 2
 };

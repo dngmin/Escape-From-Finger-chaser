@@ -13,6 +13,8 @@ public:
     bool run();
 
 private:
+    void MainMenu();
+
     void WindowEvent();
     
     void UpdatePlayerPosition();
@@ -38,5 +40,5 @@ private:
     float chasing_object_speed;
     float distanceThreshold = 1.f;
 
-    Stage stage = Stage::SIMULATING;
+    Stage stage;
 };

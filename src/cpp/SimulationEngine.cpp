@@ -8,6 +8,7 @@ SimulationEngine::SimulationEngine(const SimulationConfig& simulation_config)
     , player(simulation_config.player_config)
     , prediction_steps(simulation_config.chasing_objects_config.prediction_steps)
     , chasing_object_speed(simulation_config.chasing_objects_config.speed)
+    , stage(Stage::MAINMENU)
     {
         // 初回描画のために、正規化された座標の変換処理を1回だけ行う
         player.update(config.player_config.init_pos, config.window_config.window_size);
@@ -21,6 +22,7 @@ SimulationEngine::SimulationEngine(const SimulationConfig& simulation_config)
 
 bool SimulationEngine::run()
 {
+    MainMenu();
     while (graphics_engine.window.isOpen())
     {
         WindowEvent();
@@ -33,6 +35,25 @@ bool SimulationEngine::run()
         }
     }
     return false;
+}
+
+void SimulationEngine::MainMenu()
+{
+    while (graphics_engine.window.isOpen())
+    {
+        WindowEvent();
+        UpdatePlayerPosition();
+        Render();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Q))
+        {
+            CloseSimulation();
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space))
+        {
+            stage = Stage::SIMULATING;
+            break;
+        }
+    }
 }
 
 void SimulationEngine::WindowEvent()
