@@ -6,6 +6,20 @@ MediaPipeを用いたAIによる手の座標トラッキング（Python）と、
 
 ## 📽️ Demo
 ![demo](./assets/demo.gif)
+<table>
+  <tr>
+    <td><span style="color:white; font-size: 20px;">●</span> ユーザー</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span style="color:red; font-size: 20px;">●</span> 単純追跡</td>
+    <td><span style="color:lightgreen; font-size: 20px;">●</span> オイラー法予測</td>
+  </tr>
+  <tr>
+    <td><span style="color:yellow; font-size: 20px;">●</span> 軸整列移動</td>
+    <td><span style="color:cyan; font-size: 20px;">●</span> 相対的な乱数</td>
+  </tr>
+</table>
 
 ## 🛠️ 技術スタック
 ### 開発環境
