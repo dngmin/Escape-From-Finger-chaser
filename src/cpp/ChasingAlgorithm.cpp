@@ -1,6 +1,5 @@
 #include "ChasingAlgorithm.hpp"
 #include "Utils.hpp"
-#include <cmath>
 
 sf::Vector2f predictEulerPosition(const sf::Vector2f& curr_pos, const sf::Vector2f& curr_vel, float dT, int prediction_steps)
 {

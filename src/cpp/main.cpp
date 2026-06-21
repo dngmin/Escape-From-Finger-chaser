@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 #include "SimulationEngine.hpp"
 
 void red_message(std::string msg)
